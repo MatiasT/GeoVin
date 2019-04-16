@@ -1,3 +1,5 @@
-<p>
-  uimap works!
+
+<ion-spinner #spinner *ngIf="showSpinner" ></ion-spinner>
+<p *ngIf="!showSpinner">
+  Map goes here
 </p>
