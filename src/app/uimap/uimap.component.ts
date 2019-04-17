@@ -21,7 +21,9 @@ export class UIMapComponent implements OnInit {
  private loadMap():Promise<any>{
    var self=this;
    return new Promise((resolve,reject)=>{
-     self.map =  L.map('mapdiv').setView([-40, -60], 4);
+     self.map =  L.map('mapdiv').setView([-35, -62], 4);
+     //TODO: this is for debugging purposes
+     window['map'] =self.map;
      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(self.map);
