@@ -33,7 +33,11 @@ export class UIMapComponent implements OnInit {
   }
   
   private injectSDK(): Promise<any> {
+    //TODO: it is probably a good idea to install leaflet as a package and include it with the app.
+    //If that is the case i can use another thing to test the network.
 
+    //TODO: use the marker cluster library https://github.com/Leaflet/Leaflet.markercluster
+    //tutorial at https://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps/
     return new Promise((resolve, reject) => {
 
         var loadFunc= () => {
