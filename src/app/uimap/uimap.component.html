@@ -1,5 +1,3 @@
 
-<ion-spinner #spinner *ngIf="showSpinner" ></ion-spinner>
-<p *ngIf="!showSpinner">
-  Map goes here
-</p>
+<ion-spinner #spinner *ngIf="!mapLoaded" ></ion-spinner>
+<div id="mapdiv" class="map"></div>
