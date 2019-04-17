@@ -31,7 +31,12 @@ export class UIMapComponent implements OnInit {
     //here we should load the markers i guess
     });
   }
-  
+  public AddCenteredMarker(){
+    this.AddMarker( this.map.getCenter());
+  }
+  public AddMarker(location){
+    L.marker( this.map.getCenter()).addTo(this.map);
+  }
   private injectSDK(): Promise<any> {
     //TODO: it is probably a good idea to install leaflet as a package and include it with the app.
     //If that is the case i can use another thing to test the network.
