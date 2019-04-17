@@ -1,4 +1,4 @@
-declare var OpenLayers: any;
+declare var L: any;
 import { Component, OnInit, Input, ViewChild,Renderer2,Inject } from '@angular/core';
 import { IonSpinner } from '@ionic/angular';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -21,19 +21,10 @@ export class UIMapComponent implements OnInit {
  private loadMap():Promise<any>{
    var self=this;
    return new Promise((resolve,reject)=>{
-     self.map = new OpenLayers.Map("mapdiv");
-     self.map.addLayer(new OpenLayers.Layer.OSM());
-     var lonLat = new OpenLayers.LonLat( -0.1279688 ,51.5077286 )
-      .transform(
-        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-        this.map.getProjectionObject() // to Spherical Mercator Projection
-        );
-    var zoom=16;
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    self.map.addLayer(markers);
-    markers.addMarker(new OpenLayers.Marker(lonLat));
-    
-    self.map.setCenter (lonLat, zoom);
+     self.map =  L.map('mapdiv').setView([-40, -60], 4);
+     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(self.map);
     resolve(true);
     //here we should load the markers i guess
     });
@@ -47,11 +38,19 @@ export class UIMapComponent implements OnInit {
             this.mapLoaded = true;
             resolve(true);
         }
-
+        //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
+        let link =this.renderer.createElement("link");
+        link.rel="stylesheet";
+        link.href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css";
+        //link.integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==";
+        //link.crossorigin="";
+        
         let script = this.renderer.createElement('script');
-        script.id = 'map';
-        script.src="http://www.openlayers.org/api/OpenLayers.js";
+        script.src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js";
+       // script.integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==";
+       // script.crossorigin="";
         script.onload=loadFunc;
+        this.renderer.appendChild(this._document.body,link);
         this.renderer.appendChild(this._document.body, script);
 
     });
