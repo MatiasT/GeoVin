@@ -1,22 +1,43 @@
 declare var L: any;
+
 import { Component, OnInit, Input, ViewChild,Renderer2,Inject } from '@angular/core';
 import { IonSpinner } from '@ionic/angular';
 import { DOCUMENT } from '@angular/platform-browser';
+import {Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-uimap',
   templateUrl: './uimap.component.html',
   styleUrls: ['./uimap.component.scss'],
+  providers:[Geolocation]
 })
 export class UIMapComponent implements OnInit {
   map:any;
   mapLoaded=false;
-  constructor(private renderer: Renderer2,@Inject(DOCUMENT) private _document) { }
+  watch:Observable<Geoposition>;
+  userMarker: any;
+  constructor(private renderer: Renderer2,private geolocation: Geolocation,@Inject(DOCUMENT) private _document) { }
 
 
   ngOnInit() {
-    var self=this;
-    this.injectSDK().then(()=>{return self.loadMap();});
+    let self=this;
+    this.injectSDK().then(()=>{return self.loadMap();})
+    .then(()=>{
+      self.userMarker = self.AddCenteredMarker();
+      self.watch = self.geolocation.watchPosition();
+      self.watch.subscribe((data) => {
+       // data can be a set of coordinates, or an error (if an error occurred).
+       // data.coords.latitude
+       // data.coords.longitude
+       self.userMarker.setLatLng([data.coords.latitude, data.coords.longitude]).update(); 
+      },(error)=>{
+        console.error(error);}
+        ,()=>{console.log("completed");});
+
+    });
+    
   }
  private loadMap():Promise<any>{
    var self=this;
@@ -32,10 +53,12 @@ export class UIMapComponent implements OnInit {
     });
   }
   public AddCenteredMarker(){
-    this.AddMarker( this.map.getCenter());
+   return  this.AddMarker( this.map.getCenter());
   }
   public AddMarker(location){
-    L.marker( this.map.getCenter()).addTo(this.map);
+   let marker= L.marker(location);
+   marker.addTo(this.map);
+   return marker;
   }
   private injectSDK(): Promise<any> {
     //TODO: it is probably a good idea to install leaflet as a package and include it with the app.
