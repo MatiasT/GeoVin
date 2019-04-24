@@ -11,7 +11,12 @@ export class ExplorePage  implements OnInit {
   constructor(public rest:GeoVinAPIService) {}
   @ViewChild("map") map: any; 
   ngOnInit(): void {
-  this.rest.test().then(()=>{debugger;});  
+  this.rest.GetAllReports().then(
+    (data)=>{ 
+      console.log(data); 
+      debugger;
+    },(err)=>{
+      console.error(err);});  
   }
   
 
