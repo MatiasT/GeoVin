@@ -6,6 +6,6 @@
   </ion-toolbar>
 </ion-header>
 <ion-content scroll="false"> 
-
-  <app-uimap #map></app-uimap>
+  <ion-spinner #spinner *ngIf="!loaded" class="spinner" ></ion-spinner>
+  <app-uimap #map ></app-uimap>
 </ion-content>

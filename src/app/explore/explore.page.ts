@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GeoVinAPIService } from '../geo-vin-api.service';
+import { UIMapComponent } from '../uimap/uimap.component';
+import { locationReport } from '../LocationReport';
 
 @Component({
   selector: 'app-explore',
@@ -8,13 +10,17 @@ import { GeoVinAPIService } from '../geo-vin-api.service';
 })
 export class ExplorePage  implements OnInit {
   
+  loaded=false;
   constructor(public rest:GeoVinAPIService) {}
-  @ViewChild("map") map: any; 
+  @ViewChild("map") map: UIMapComponent; 
   ngOnInit(): void {
-  this.rest.GetAllReports().then(
-    (data)=>{ 
-      console.log(data); 
-      debugger;
+  let self=this;
+  self.rest.GetAllReports().then(
+    (data:locationReport[])=>{ 
+      self.loaded=true;
+      for (var i = 0, len = data.length; i < len; i++) {
+        self.map.AddMarker([data[i].lat,data[i].lng]);
+      }
     },(err)=>{
       console.error(err);});  
   }
