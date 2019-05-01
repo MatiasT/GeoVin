@@ -16,7 +16,7 @@ export class locationReport{
 
         return new locationReport(
             Number.parseFloat(obj.lat),
-            Number.parseFloat(obj.lat),
+            Number.parseFloat(obj.lng),
             obj.valorVinchuca,
             obj.username);
     }
