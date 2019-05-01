@@ -19,7 +19,8 @@ export class ExplorePage  implements OnInit {
     (data:locationReport[])=>{ 
       self.loaded=true;
       for (var i = 0, len = data.length; i < len; i++) {
-        self.map.AddMarker([data[i].lat,data[i].lng]);
+        //TODO: replace this with bulk add
+        self.map.AddClusteredMarker([data[i].lat,data[i].lng]);
       }
     },(err)=>{
       console.error(err);});  
