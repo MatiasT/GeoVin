@@ -1,8 +1,10 @@
 //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
-import { Map, tileLayer, marker } from "leaflet"
+import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup } from "leaflet"
+import "leaflet.markercluster";
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { Observable } from 'rxjs';
+
 
 
 @Component({
@@ -16,6 +18,7 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
   watch: Observable<Geoposition>;
   //TODO: check the type of the marker.
   userMarker: any;
+  markerCluster: MarkerClusterGroup;
   constructor(private geolocation: Geolocation) { }
 
   ngAfterViewChecked(): void {
@@ -49,6 +52,8 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(self.map);
+      self.markerCluster = markerClusterGroup();
+      self.map.addLayer(self.markerCluster);
       resolve(true);
     });
   }
@@ -60,9 +65,14 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
     m.addTo(this.map);
     return m;
   }
-  //TODO: use the marker cluster library https://github.com/Leaflet/Leaflet.markercluster
-  //tutorial at https://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps/
 
+  //TODO: i think a good idea would be to provide a batch add. it would speed up the map usage
+  public AddClusteredMarker(location) {
+    let m = marker(location);
+    this.markerCluster.addLayer(m);
+    return m;
+  }
+  
 
   //TODO: I should be able to configure if i want an user marker. 
 }
