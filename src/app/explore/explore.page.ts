@@ -17,11 +17,12 @@ export class ExplorePage  implements OnInit {
   let self=this;
   self.rest.GetAllReports().then(
     (data:locationReport[])=>{ 
-      self.loaded=true;
+      
       for (var i = 0, len = data.length; i < len; i++) {
         //TODO: replace this with bulk add
         self.map.AddClusteredMarker([data[i].lat,data[i].lng]);
       }
+      self.loaded=true;
     },(err)=>{
       console.error(err);});  
   }
