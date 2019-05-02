@@ -9,21 +9,40 @@
 <ion-content scroll="false">
   <ion-slides id="slider" #slider pager="true" [options]="slideOpts" class="slider">
     <ion-slide style="height: 100%;">
-      <h1>Slide 1</h1>
       <ion-button (click)="next()">
         <ion-icon slot="start" name="play"></ion-icon>
         Reportar
       </ion-button>
-
     </ion-slide>
     <ion-slide>
-      <h1>Slide 2</h1>
+      Location
       <ion-button (click)="next()">
         Siguiente
       </ion-button>
     </ion-slide>
+    
     <ion-slide>
-      <h1>Slide 3</h1>
+        Picture1
+        <ion-button (click)="next()">
+          Siguiente
+        </ion-button>
+      </ion-slide>
+      
+    <ion-slide>
+        Picture2
+        <ion-button (click)="next()">
+          Siguiente
+        </ion-button>
+      </ion-slide>
+      
+    <ion-slide>
+        Habitat
+        <ion-button (click)="next()">
+          Siguiente
+        </ion-button>
+      </ion-slide>
+    <ion-slide>
+      Sending
       <ion-button color="danger" (click)="reset()">
         Reset
       </ion-button>
