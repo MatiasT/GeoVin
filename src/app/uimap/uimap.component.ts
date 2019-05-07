@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
   providers: [Geolocation],
 })
 export class UIMapComponent implements OnInit, AfterViewChecked {
+  
   map: Map;
   watch: Observable<Geoposition>;
   //TODO: check the type of the marker.
@@ -22,7 +23,7 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
   constructor(private geolocation: Geolocation) { }
 
   ngAfterViewChecked(): void {
-    this.map.invalidateSize(false);
+    this.refresh();
   }
   ngOnInit(): void {
     let self = this;
@@ -42,6 +43,9 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
 
       });
 
+  }
+  refresh() { 
+     this.map.invalidateSize(false);
   }
   private loadMap(): Promise<any> {
     var self = this;

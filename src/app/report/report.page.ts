@@ -9,8 +9,8 @@ import { UIMapComponent } from '../uimap/uimap.component';
   styleUrls: ['report.page.scss']
 })
 export class ReportPage implements OnInit {
-  
-  @ViewChild("map") map: UIMapComponent; 
+
+  @ViewChild("map") map: UIMapComponent;
   /**
    *
    */
@@ -33,9 +33,9 @@ export class ReportPage implements OnInit {
     this.slider.lockSwipes(true);
   }
 
-  
-  takePicture(name:string){
-    let self=this;
+
+  takePicture(name: string) {
+    let self = this;
     self.camera.getPicture(self.options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
@@ -43,14 +43,18 @@ export class ReportPage implements OnInit {
       //imageData should contain the path
       console.log(imageData);
       self.next();
-     }, (err) => {
+    }, (err) => {
       // Handle error
-     });
-      }
+    });
+  }
   next() {
     let self = this;
     self.slider.lockSwipes(false).then(() => {
-      self.slider.slideNext().then(() => { self.slider.lockSwipes(true); });
+      self.slider.slideNext().then(() => {
+        self.slider.lockSwipes(true);
+        //TODO: refresh the map only if in the correct tab.
+        self.map.refresh();
+      });
     });
   }
   reset() {

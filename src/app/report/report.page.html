@@ -15,10 +15,12 @@
       </ion-button>
     </ion-slide>
     <ion-slide>
-      <app-uimap #map ></app-uimap>
-      <ion-button (click)="next()">
-        Siguiente
-      </ion-button>
+      <app-uimap #map class="map" ></app-uimap>
+      <ion-fab vertical="center" horizontal="end" slot="fixed">
+        <ion-fab-button  (click)="next()">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-slide>
     
     <ion-slide>
