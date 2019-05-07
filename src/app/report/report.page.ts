@@ -33,35 +33,32 @@ export class ReportPage implements OnInit {
     this.slider.lockSwipes(true);
   }
 
+  async showMap() {
+    await this.next();
+    this.map.refresh();
+  }
 
-  takePicture(name: string) {
-    let self = this;
-    self.camera.getPicture(self.options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      // let base64Image = 'data:image/jpeg;base64,' + imageData;
-      //imageData should contain the path
-      console.log(imageData);
-      self.next();
-    }, (err) => {
-      // Handle error
-    });
+  async takePicture(name: string) {
+    let imageData = await this.camera.getPicture(this.options);
+    // imageData is either a base64 encoded string or a file URI
+    // If it's base64 (DATA_URL):
+    // let base64Image = 'data:image/jpeg;base64,' + imageData;
+    //imageData should contain the path
+    console.log(imageData);
+    //TODO: show the image, and let the user re-take the picture maybe?
+    //both images could be on the same page i guess
+    this.next();
+    //TODO: error handling.
   }
-  next() {
-    let self = this;
-    self.slider.lockSwipes(false).then(() => {
-      self.slider.slideNext().then(() => {
-        self.slider.lockSwipes(true);
-        //TODO: refresh the map only if in the correct tab.
-        self.map.refresh();
-      });
-    });
+  async next() {
+    await this.slider.lockSwipes(false);
+    await this.slider.slideNext();
+    await this.slider.lockSwipes(true);
   }
-  reset() {
-    let self = this;
-    self.slider.lockSwipes(false).then(() => {
-      self.slider.slideTo(0).then(() => { self.slider.lockSwipes(true); });
-    });
+  async reset() {
+    await this.slider.lockSwipes(false);
+    await this.slider.slideTo(0);
+    await this.slider.lockSwipes(true);
   }
 
 }
