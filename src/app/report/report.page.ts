@@ -34,6 +34,7 @@ export class ReportPage implements OnInit {
   }
   locationMarker:any;
   async showMap() {
+    //TODO: pre-load map to ensure the first transition is not as bumpy
     await this.next();
     if(this.locationMarker==null){
       this.locationMarker=this.map.AddCenteredMarker();
