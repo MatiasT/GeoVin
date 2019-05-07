@@ -1,7 +1,7 @@
 //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
 import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup } from "leaflet"
 import "leaflet.markercluster";
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { Observable } from 'rxjs';
 
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   providers: [Geolocation],
 })
 export class UIMapComponent implements OnInit, AfterViewChecked {
-  
+  @ViewChild("mapdiv")mapdiv:any;
   map: Map;
   watch: Observable<Geoposition>;
   //TODO: check the type of the marker.
@@ -26,7 +26,7 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
     this.refresh();
   }
   ngOnInit(): void {
-    let self = this;
+    let self = this; 
     this.loadMap()
       .then(() => {
         self.userMarker = self.AddCenteredMarker();
@@ -45,14 +45,18 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
 
   }
   refresh() { 
+    if(this.map){
      this.map.invalidateSize(false);
+    }
   }
   private loadMap(): Promise<any> {
     var self = this;
     return new Promise((resolve, reject) => {
-      self.map = new Map('mapdiv').setView([-35, -62], 4);
+      //TODO: check who owns this nativeElement thing, if i do not supply the real div to leaflet, it all fails.
+      //but i need to supply it this way because if i supply it by name, i have issues with multiple maps present on the same app.
+      self.map = new Map(self.mapdiv.nativeElement).setView([-35, -62], 4);
       //TODO: this is for debugging purposes
-      window['map'] = self.map;
+      //window['map'] = self.map;
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(self.map);

@@ -12,7 +12,7 @@ export class ExplorePage  implements OnInit {
   
   loaded=false;
   constructor(public rest:GeoVinAPIService) {}
-  @ViewChild("map") map: UIMapComponent; 
+  @ViewChild("dataMap") dataMap: UIMapComponent; 
   ngOnInit(): void {
   let self=this;
   self.rest.GetAllReports().then(
@@ -20,7 +20,7 @@ export class ExplorePage  implements OnInit {
       
       for (var i = 0, len = data.length; i < len; i++) {
         //TODO: replace this with bulk add
-        self.map.AddClusteredMarker([data[i].lat,data[i].lng]);
+        self.dataMap.AddClusteredMarker([data[i].lat,data[i].lng]);
       }
       self.loaded=true;
     },(err)=>{
