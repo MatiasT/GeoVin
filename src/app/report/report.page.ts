@@ -32,10 +32,20 @@ export class ReportPage implements OnInit {
   ngOnInit(): void {
     this.slider.lockSwipes(true);
   }
-
+  locationMarker:any;
   async showMap() {
     await this.next();
-    this.map.refresh();
+    if(this.locationMarker==null){
+      this.locationMarker=this.map.AddCenteredMarker();
+      this.map.map.on("move",(e)=>{this.locationMarker
+        .setLatLng(this.map.map.getCenter()).update()});
+    }  
+    //this.map.refresh();
+    //center the map in the user, if it exists
+    //TODO: do this right?
+    if(this.map.userMarker!=null){
+      this.map.map.setView(this.map.userMarker.getLatLng(),4);
+    }
   }
 
   async takePicture(name: string) {
