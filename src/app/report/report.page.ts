@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
-
+import { UIMapComponent } from '../uimap/uimap.component';
 
 @Component({
   selector: 'app-report',
@@ -9,6 +9,8 @@ import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
   styleUrls: ['report.page.scss']
 })
 export class ReportPage implements OnInit {
+  
+  @ViewChild("map") map: UIMapComponent; 
   /**
    *
    */

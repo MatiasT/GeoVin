@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReportPage } from './report.page';
+import { UIMapComponent } from '../uimap/uimap.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { ReportPage } from './report.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: ReportPage }])
   ],
-  declarations: [ReportPage]
+  declarations: [ReportPage,UIMapComponent]
 })
 export class ReportPageModule {}
