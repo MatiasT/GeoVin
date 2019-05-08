@@ -1,7 +1,7 @@
 //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
 import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup } from "leaflet"
 import "leaflet.markercluster";
-import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { Observable } from 'rxjs';
 
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   providers: [Geolocation],
 })
 export class UIMapComponent implements OnInit, AfterViewChecked {
-  @ViewChild("mapdiv")mapdiv:any;
+  @ViewChild("mapdiv")mapdiv:ElementRef;
   map: Map;
   watch: Observable<Geoposition>;
   //TODO: check the type of the marker.
