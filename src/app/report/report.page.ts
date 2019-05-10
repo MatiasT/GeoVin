@@ -3,6 +3,8 @@ import { IonSlides } from '@ionic/angular';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { UIMapComponent } from '../uimap/uimap.component';
 
+const emptyImagePath="assets/camera.svg";
+
 @Component({
   selector: 'app-report',
   templateUrl: 'report.page.html',
@@ -11,11 +13,17 @@ import { UIMapComponent } from '../uimap/uimap.component';
 export class ReportPage implements OnInit {
 
   @ViewChild("map") map: UIMapComponent;
+  firstImage: any;
+  locationMarker:any;
+  secondImage: any;
   /**
    *
    */
   constructor(private camera: Camera) {
-
+    this.resetImages();
+  }
+  private resetImages(){
+    this.firstImage=this.secondImage=emptyImagePath;
   }
   options: CameraOptions = {
     quality: 100,
@@ -32,7 +40,7 @@ export class ReportPage implements OnInit {
   ngOnInit(): void {
     this.slider.lockSwipes(true);
   }
-  locationMarker:any;
+
   async showMap() {
     //TODO: pre-load map to ensure the first transition is not as bumpy
     await this.next();
@@ -48,17 +56,25 @@ export class ReportPage implements OnInit {
       this.map.map.setView(this.map.userMarker.getLatLng(),4);
     }
   }
-
-  async takePicture(name: string) {
+  picturesNotTaken():boolean{
+    return this.firstImage==emptyImagePath || this.secondImage==emptyImagePath;
+  }
+  async takeFirstPicture(){
+    this.firstImage=await this.takePicture();
+  }
+  async takeSecondPicture(){
+    this.secondImage= await this.takePicture();
+  }
+  async takePicture() {
     let imageData = await this.camera.getPicture(this.options);
     // imageData is either a base64 encoded string or a file URI
     // If it's base64 (DATA_URL):
     // let base64Image = 'data:image/jpeg;base64,' + imageData;
-    //imageData should contain the path
+    //imageData should contain the path otherwise, but it starts with "blob:". i'll remove that
     console.log(imageData);
     //TODO: show the image, and let the user re-take the picture maybe?
     //both images could be on the same page i guess
-    this.next();
+    return imageData;
     //TODO: error handling.
   }
   async next() {

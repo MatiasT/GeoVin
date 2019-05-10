@@ -15,34 +15,36 @@
       </ion-button>
     </ion-slide>
     <ion-slide>
-      <app-uimap #map class="map" ></app-uimap>
+      <app-uimap #map class="map"></app-uimap>
       <ion-fab vertical="center" horizontal="end" slot="fixed">
-        <ion-fab-button  (click)="next()">
+        <ion-fab-button (click)="next()">
           <ion-icon name="camera"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-slide>
-    
+
     <ion-slide>
-        Picture1
-        <ion-button (click)="takePicture('picture1')">
-          Siguiente
-        </ion-button>
-      </ion-slide>
-      
+      <ion-grid class="grid">
+        <ion-row class="row">
+            <ion-img class="picture" [src]="firstImage" (click)="takeFirstPicture()">
+              <ion-icon name="camera"></ion-icon>
+            </ion-img>
+        </ion-row>
+        <ion-row class="row">
+            <ion-img class="picture" [src]="secondImage" (click)="takeSecondPicture()"></ion-img>
+        </ion-row>
+      </ion-grid>
+      <ion-fab-button (click)="next()" [disabled]="picturesNotTaken()">
+        <ion-icon name="home"></ion-icon>
+      </ion-fab-button>
+    </ion-slide>
+
     <ion-slide>
-        Picture2
-        <ion-button (click)="takePicture('picture2')">
-          Siguiente
-        </ion-button>
-      </ion-slide>
-      
-    <ion-slide>
-        Habitat
-        <ion-button (click)="next()">
-          Siguiente
-        </ion-button>
-      </ion-slide>
+      Habitat
+      <ion-button (click)="next()">
+        Siguiente
+      </ion-button>
+    </ion-slide>
     <ion-slide>
       Sending
       <ion-button color="danger" (click)="reset()">
