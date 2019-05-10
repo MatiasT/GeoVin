@@ -83,6 +83,7 @@ export class ReportPage implements OnInit {
     await this.slider.lockSwipes(true);
   }
   async reset() {
+    this.resetImages();
     await this.slider.lockSwipes(false);
     await this.slider.slideTo(0);
     await this.slider.lockSwipes(true);
