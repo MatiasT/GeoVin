@@ -5,7 +5,7 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
+<!--map and location-->
 <ion-content scroll="false">
   <ion-slides id="slider" #slider pager="true" [options]="slideOpts" class="slider">
     <ion-slide style="height: 100%;">
@@ -17,27 +17,59 @@
     <ion-slide>
       <app-uimap #map class="map"></app-uimap>
       <ion-fab vertical="center" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="next()">
-          <ion-icon name="camera"></ion-icon>
+        <ion-fab-button (click)="next()" color="success">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-slide>
 
+
+    <!--First picture-->
     <ion-slide>
       <ion-grid class="grid">
-        <ion-row class="row">
-            <ion-img class="picture" [src]="firstImage" (click)="takeFirstPicture()">
-              <ion-icon name="camera"></ion-icon>
-            </ion-img>
+        <ion-row>
+          <ion-title>Foto 1</ion-title>
         </ion-row>
-        <ion-row class="row">
-            <ion-img class="picture" [src]="secondImage" (click)="takeSecondPicture()"></ion-img>
+        <ion-row>
+          <ion-img class="picture" [src]="firstImage">
+          </ion-img>
         </ion-row>
       </ion-grid>
-      <ion-fab-button (click)="next()" [disabled]="picturesNotTaken()">
-        <ion-icon name="home"></ion-icon>
-      </ion-fab-button>
+      <ion-fab vertical="bottom" horizontal="center">
+        <ion-fab-button (click)="takeFirstPicture()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-fab vertical="center" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="next()" [disabled]="firstPictureNotTaken()" color="success">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-slide>
+
+    <!--Second picture-->
+    <ion-slide>
+      <ion-grid class="grid">
+        <ion-row>
+          <ion-title>Foto 2</ion-title>
+        </ion-row>
+        <ion-row>
+          <ion-img class="picture" [src]="secondImage">
+          </ion-img>
+        </ion-row>
+      </ion-grid>
+      <ion-fab vertical="bottom" horizontal="center">
+        <ion-fab-button (click)="takeSecondPicture()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-fab vertical="center" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="next()" [disabled]="secondPictureNotTaken()" color="success">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </ion-slide>
+
 
     <ion-slide>
       Habitat

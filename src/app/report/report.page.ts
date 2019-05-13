@@ -3,7 +3,7 @@ import { IonSlides } from '@ionic/angular';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { UIMapComponent } from '../uimap/uimap.component';
 
-const emptyImagePath="assets/camera.svg";
+const emptyImagePath = "assets/camera.svg";
 
 @Component({
   selector: 'app-report',
@@ -14,7 +14,7 @@ export class ReportPage implements OnInit {
 
   @ViewChild("map") map: UIMapComponent;
   firstImage: any;
-  locationMarker:any;
+  locationMarker: any;
   secondImage: any;
   /**
    *
@@ -22,8 +22,8 @@ export class ReportPage implements OnInit {
   constructor(private camera: Camera) {
     this.resetImages();
   }
-  private resetImages(){
-    this.firstImage=this.secondImage=emptyImagePath;
+  private resetImages() {
+    this.firstImage = this.secondImage = emptyImagePath;
   }
   options: CameraOptions = {
     quality: 100,
@@ -44,26 +44,31 @@ export class ReportPage implements OnInit {
   async showMap() {
     //TODO: pre-load map to ensure the first transition is not as bumpy
     await this.next();
-    if(this.locationMarker==null){
-      this.locationMarker=this.map.AddCenteredMarker();
-      this.map.map.on("move",(e)=>{this.locationMarker
-        .setLatLng(this.map.map.getCenter()).update()});
-    }  
+    if (this.locationMarker == null) {
+      this.locationMarker = this.map.AddCenteredMarker();
+      this.map.map.on("move", (e) => {
+        this.locationMarker
+        .setLatLng(this.map.map.getCenter()).update()
+      });
+    }
     //this.map.refresh();
     //center the map in the user, if it exists
     //TODO: do this right?
-    if(this.map.userMarker!=null){
-      this.map.map.setView(this.map.userMarker.getLatLng(),4);
+    if (this.map.userMarker != null) {
+      this.map.map.setView(this.map.userMarker.getLatLng(), 4);
     }
   }
-  picturesNotTaken():boolean{
-    return this.firstImage==emptyImagePath || this.secondImage==emptyImagePath;
+  firstPictureNotTaken(): boolean {
+    return this.firstImage == emptyImagePath;
   }
-  async takeFirstPicture(){
-    this.firstImage=await this.takePicture();
+  secondPictureNotTaken(): boolean {
+    return this.secondImage == emptyImagePath;
   }
-  async takeSecondPicture(){
-    this.secondImage= await this.takePicture();
+  async takeFirstPicture() {
+    this.firstImage = await this.takePicture();
+  }
+  async takeSecondPicture() {
+    this.secondImage = await this.takePicture();
   }
   async takePicture() {
     let imageData = await this.camera.getPicture(this.options);
