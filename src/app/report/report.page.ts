@@ -16,11 +16,20 @@ export class ReportPage implements OnInit {
   firstImage: any;
   locationMarker: any;
   secondImage: any;
+  habitat:string;
+  subHabitat:string;
+  otherHabitat:string;
   /**
    *
    */
   constructor(private camera: Camera) {
+    this.resetData();
+  } 
+  private resetData(){
     this.resetImages();
+    this.habitat="domicilio";
+    this.subHabitat="";
+    this.otherHabitat="";
   }
   private resetImages() {
     this.firstImage = this.secondImage = emptyImagePath;
@@ -56,6 +65,7 @@ export class ReportPage implements OnInit {
       this.map.map.setView(this.map.userMarker.getLatLng(), 4);
     }
   }
+  //dealing with images & camera
   firstPictureNotTaken(): boolean {
     return this.firstImage == emptyImagePath;
   }
@@ -77,13 +87,23 @@ export class ReportPage implements OnInit {
     return imageData;
     //TODO: error handling.
   }
+//habitat selection
+
+habitatChanged(evt:any){
+  this.subHabitat="";
+  this.otherHabitat="";
+}
+habitatNotSelected(){
+  return this.subHabitat=="" || ( this.subHabitat=="otros" && this.otherHabitat=="");
+}
+//slider / wizard 
   async next() {
     await this.slider.lockSwipes(false);
     await this.slider.slideNext();
     await this.slider.lockSwipes(true);
   }
   async reset() {
-    this.resetImages();
+    this.resetData();
     await this.slider.lockSwipes(false);
     await this.slider.slideTo(0);
     await this.slider.lockSwipes(true);

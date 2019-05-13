@@ -5,8 +5,9 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<!--map and location-->
 <ion-content scroll="false">
+
+  <!--Start Report-->
   <ion-slides id="slider" #slider pager="true" [options]="slideOpts" class="slider">
     <ion-slide style="height: 100%;">
       <ion-button (click)="showMap()">
@@ -14,6 +15,8 @@
         Reportar
       </ion-button>
     </ion-slide>
+
+    <!--map and location-->
     <ion-slide>
       <app-uimap #map class="map"></app-uimap>
       <ion-fab vertical="center" horizontal="end" slot="fixed">
@@ -70,13 +73,89 @@
       </ion-fab>
     </ion-slide>
 
-
+    <!--habitat reporting-->
     <ion-slide>
-      Habitat
-      <ion-button (click)="next()">
-        Siguiente
-      </ion-button>
+      <ion-grid class="grid">
+        <ion-row>
+          <ion-title>Seleccione el habitat</ion-title>
+        </ion-row>
+        <ion-row>
+          <ion-segment [(ngModel)]="habitat" (ionChange)="habitatChanged($event)">
+            <ion-segment-button value="domicilio">
+              <ion-label>Domicilio</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="peridomicilio">
+              <ion-label>Peridomicilio</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="silvestre">
+              <ion-label>Silvestre</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+        </ion-row>
+        <ion-row>
+          <ion-segment [(ngModel)]="subHabitat" *ngIf="habitat=='domicilio'">
+            <ion-segment-button value="dormitorio">
+              <ion-label>Dormitorio</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="cocina">
+              <ion-label>Cocina</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="galeria">
+              <ion-label>galería</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="otros">
+              <ion-label>Otros</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+
+          <ion-segment [(ngModel)]="subHabitat" *ngIf="habitat=='peridomicilio'">
+            <ion-segment-button value="corrales">
+              <ion-label>Corrales</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="gallinero">
+              <ion-label>Gallinero</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="galpon">
+              <ion-label>Galpón</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="otros">
+              <ion-label>Otros</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <ion-segment [(ngModel)]="subHabitat" *ngIf="habitat=='silvestre'">
+            <ion-segment-button value="arboles">
+              <ion-label>Arboles</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="nidos">
+              <ion-label>Nidos de Aves</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="piedras">
+              <ion-label>Piedras</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="otros">
+              <ion-label>Otros</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-row>
+        <ion-row>
+          <!--TODO: Auto focus the input when shown-->
+          <ion-item *ngIf="subHabitat=='otros'" class="textInput">
+            <ion-label position="floating">Describa al lugar</ion-label>
+            <ion-input class="textInput" [(ngModel)]="otherHabitat"></ion-input>
+          </ion-item>
+        </ion-row>
+      </ion-grid>
+      <!--TODO: add detailed info about the selected habitat-->
+      <ion-fab vertical="center" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="next()" [disabled]="habitatNotSelected()" color="success">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-slide>
+
     <ion-slide>
       Sending
       <ion-button color="danger" (click)="reset()">
