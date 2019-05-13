@@ -51,8 +51,6 @@ export class ReportPage implements OnInit {
         .setLatLng(this.map.map.getCenter()).update()
       });
     }
-    //this.map.refresh();
-    //center the map in the user, if it exists
     //TODO: do this right?
     if (this.map.userMarker != null) {
       this.map.map.setView(this.map.userMarker.getLatLng(), 4);
@@ -75,10 +73,7 @@ export class ReportPage implements OnInit {
     // imageData is either a base64 encoded string or a file URI
     // If it's base64 (DATA_URL):
     // let base64Image = 'data:image/jpeg;base64,' + imageData;
-    //imageData should contain the path otherwise, but it starts with "blob:". i'll remove that
     console.log(imageData);
-    //TODO: show the image, and let the user re-take the picture maybe?
-    //both images could be on the same page i guess
     return imageData;
     //TODO: error handling.
   }
