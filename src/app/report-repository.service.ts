@@ -6,8 +6,13 @@ import { sightingReport } from "./sightingReport";
 export class ReportRepositoryService {
 
   constructor() { }
-
+  private reports: sightingReport[];
   getReports(): sightingReport[] {
-    return [];
+    return this.reports;
   }
+  async addReport(report: sightingReport) {
+    //TODO: really save it to some storage
+    this.reports.push(report);
+  }
+
 }
