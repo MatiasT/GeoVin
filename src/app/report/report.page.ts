@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { UIMapComponent } from '../uimap/uimap.component';
+import { ReportRepositoryService } from '../report-repository.service';
 
 const emptyImagePath = "assets/camera.svg";
 
@@ -22,7 +23,7 @@ export class ReportPage implements OnInit {
   /**
    *
    */
-  constructor(private camera: Camera) {
+  constructor(private camera: Camera, private repository:ReportRepositoryService) {
     this.resetData();
   } 
   private resetData(){
