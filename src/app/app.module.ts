@@ -11,12 +11,14 @@ import { AppComponent } from './app.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HttpClientModule } from "@angular/common/http";
 import { Camera } from '@ionic-native/camera/ngx';
+import { File } from "@ionic-native/file/ngx";
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
+    File,
     Camera,
     Geolocation,
     StatusBar,
@@ -25,4 +27,4 @@ import { Camera } from '@ionic-native/camera/ngx';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
