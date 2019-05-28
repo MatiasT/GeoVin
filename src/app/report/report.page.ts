@@ -6,6 +6,7 @@ import { ReportRepositoryService } from '../report-repository.service';
 import { File } from "@ionic-native/file/ngx";
 import { sightingReport } from '../sightingReport';
 import { Habitat } from '../habitat';
+import {WebView} from "@ionic-native/ionic-webview";
 const emptyImagePath = "assets/camera.svg";
 
 @Component({
@@ -16,9 +17,11 @@ const emptyImagePath = "assets/camera.svg";
 export class ReportPage implements OnInit {
 
   @ViewChild("map") map: UIMapComponent;
-  firstImage: any;
   locationMarker: any;
+  firstImage: any;
+  firstImagePath:string;
   secondImage: any;
+  secondImagePath:string;
   habitat: string;
   subHabitat: string;
   otherHabitat: string;
@@ -77,10 +80,12 @@ export class ReportPage implements OnInit {
     return this.secondImage == emptyImagePath;
   }
   async takeFirstPicture() {
-    this.firstImage = await this.takePicture();
+    this.firstImagePath = await this.takePicture();
+    this.firstImage=WebView.convertFileSrc(this.firstImagePath);
   }
   async takeSecondPicture() {
-    this.secondImage = await this.takePicture();
+    this.secondImagePath = await this.takePicture();
+    this.secondImage=WebView.convertFileSrc(this.secondImagePath);
   }
   async takePicture() {
     let imageData = await this.camera.getPicture(this.options);
@@ -124,8 +129,8 @@ export class ReportPage implements OnInit {
     let report = new sightingReport();
     report.datetime = new Date();
 
-    report.firstPicture = await this.saveImage(this.firstImage, report.username + this.printDate(report.datetime) + "_1.jpg");
-    report.secondPicture = await this.saveImage(this.secondImage, report.username + this.printDate(report.datetime) + "_2.jpg");
+    report.firstPicture = await this.saveImage(this.firstImagePath, report.username + this.printDate(report.datetime) + "_1.jpg");
+    report.secondPicture = await this.saveImage(this.secondImagePath, report.username + this.printDate(report.datetime) + "_2.jpg");
     let location = this.locationMarker.getLatLng();
     //TODO: use an object to encapsulate location?
     report.lat = location.lat;
