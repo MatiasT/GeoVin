@@ -86,8 +86,7 @@ export class ReportPage implements OnInit {
     let imageData = await this.camera.getPicture(this.options);
     // imageData is either a base64 encoded string or a file URI
     // If it's base64 (DATA_URL):
-    // let base64Image = 'data:image/jpeg;base64,' + imageData;
-
+ 
     return imageData;
     //TODO: error handling.
   }
@@ -104,13 +103,13 @@ export class ReportPage implements OnInit {
   //wrap up repport
   //save images to file.
   async saveImage(imagePath: string, fileName: string) {
+
     let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
     let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
     //this is failing because the paths are not well formed.
-    let testPath=await this.file.resolveLocalFilesystemUrl(imagePath);
-    let testFile = await this.file.readAsText(correctPath,currentName);
     let entry = await this.file.copyFile(correctPath, currentName, this.file.dataDirectory, fileName);
-    return entry.fullPath;
+    //TODO: error handling
+    return entry.nativeURL;
   }
   private printDate(date: Date): String {
     return [date.getFullYear(),
@@ -126,12 +125,12 @@ export class ReportPage implements OnInit {
     report.datetime = new Date();
 
     report.firstPicture = await this.saveImage(this.firstImage, report.username + this.printDate(report.datetime) + "_1.jpg");
-    report.secondPicture = await this.saveImage(this.firstImage, report.username + this.printDate(report.datetime) + "_2.jpg");
+    report.secondPicture = await this.saveImage(this.secondImage, report.username + this.printDate(report.datetime) + "_2.jpg");
     let location = this.locationMarker.getLatLng();
     //TODO: use an object to encapsulate location?
-    report.lat=location.lat;
-    report.lng=location.lng
-    report.habitat=new Habitat(this.habitat,this.subHabitat,this.otherHabitat);
+    report.lat = location.lat;
+    report.lng = location.lng
+    report.habitat = new Habitat(this.habitat, this.subHabitat, this.otherHabitat);
     await this.repository.addReport(report);
     await this.reset();
   }
