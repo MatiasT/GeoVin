@@ -5,5 +5,9 @@
 </ion-header>
 
 <ion-content>
-
+<ion-card  *ngFor="let item of repository.getReports()">
+  <ion-card-content>
+    {{item.lat}} - {{item.lng}}
+  </ion-card-content>
+</ion-card>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ReportRepositoryService } from '../storage/report-repository.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfilePage implements OnInit {
 
-  constructor() { }
+  constructor(public repository: ReportRepositoryService) { }
 
   ngOnInit() {
+    
   }
 
+  
 }
