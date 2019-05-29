@@ -5,7 +5,9 @@ import { sightingReport } from "./sightingReport";
 })
 export class ReportRepositoryService {
 
-  constructor() { }
+  constructor() { 
+    this.reports = new Array<sightingReport>();
+  }
   private reports: sightingReport[];
   getReports(): sightingReport[] {
     return this.reports;
