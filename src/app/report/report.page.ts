@@ -112,7 +112,7 @@ export class ReportPage implements OnInit {
     let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
     let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
     //this is failing because the paths are not well formed.
-    let entry = await this.file.copyFile(correctPath, currentName, this.file.dataDirectory, fileName);
+    let entry = await this.file.moveFile(correctPath, currentName, this.file.dataDirectory, fileName);
     //TODO: error handling
     return entry.nativeURL;
   }
