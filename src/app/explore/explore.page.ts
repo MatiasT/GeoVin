@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GeoVinAPIService } from '../geo-vin-api.service';
+import { GeoVinAPIService } from '../geovinAPI/geo-vin-api.service';
 import { UIMapComponent } from '../uimap/uimap.component';
-import { locationReport } from '../LocationReport';
+import { locationReport } from '../geovinAPI/locationReport';
 
 @Component({
   selector: 'app-explore',
