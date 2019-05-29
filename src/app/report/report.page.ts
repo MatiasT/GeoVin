@@ -2,10 +2,10 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { UIMapComponent } from '../uimap/uimap.component';
-import { ReportRepositoryService } from '../report-repository.service';
+import { ReportRepositoryService } from '../storage/report-repository.service';
 import { File } from "@ionic-native/file/ngx";
-import { sightingReport } from '../sightingReport';
-import { Habitat } from '../habitat';
+import { sightingReport } from '../storage/sightingReport';
+import { Habitat } from '../storage/habitat';
 import {WebView} from "@ionic-native/ionic-webview";
 const emptyImagePath = "assets/camera.svg";
 
