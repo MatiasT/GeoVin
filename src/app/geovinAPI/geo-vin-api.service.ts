@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { locationReport } from './locationReport';
 import { ReportRepositoryService } from '../storage/report-repository.service';
 import { Network } from '@ionic-native/network/ngx';
+import { sightingReport } from '../storage/sightingReport';
+import { Settings } from '../storage/settings';
+import { File } from "@ionic-native/file/ngx";
 
 const sleepTime = 10000;
 @Injectable({
@@ -11,24 +14,92 @@ const sleepTime = 10000;
 export class GeoVinAPIService {
   baseURL: string = "http://www.geovin.com.ar/connect2";
 
-  constructor(private http: HttpClient, private repository: ReportRepositoryService, private network: Network) {
+  constructor(private http: HttpClient, private repository: ReportRepositoryService, private network: Network, private file: File) {
 
     this.TryToSendReports();
   }
   /*
   This method gets the pending data to be sent, the settings, and tryes to commit it to the server
   */
-  private TryToSendReports() {
+  private async TryToSendReports() {
     let settings = this.repository.getSettings();
     if (!settings.commitOverWifi || //if the settings say i can commit over anything, or i can commit over wifi only and i am connected to wifi
       (settings.commitOverWifi && this.network.type == this.network.Connection.WIFI)) {
-      this.repository.getPendingReports().forEach(report => {
-          //TODO: commit the report.
-          //TODO: update the report?
+      this.repository.getPendingReports().forEach(async report => {
+        try {
+          if (report.reportID == null) {
+            report.reportID = await this.sendReport(report, settings);
+            //TODO: update the report?
+          }
+          if (report.sentFirstPicture) {
+            report.sentFirstPicture = await this.sendPicture(report.firstPicture);
+            //TODO: update the report?
+          }
+          if (report.sentSecondPicture) {
+            report.sentSecondPicture = await this.sendPicture(report.secondPicture);
+            //TODO: update the report?
+          }
+        } catch (error) {
+          console.error(error);
+        }
       });
 
     }
     setTimeout(this.TryToSendReports, sleepTime);
+  }
+  private GetFormattedDate(date: Date): string {
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    return day + "-" + month + "-" + year;
+  }
+  private async sendReport(report: sightingReport, settings: Settings): Promise<Number> {
+    let parameters = new HttpParams();
+    //TODO: login and username
+    parameters.append("username", null);
+    parameters.append("deviceID", "");
+    parameters.append("dateandtime", this.GetFormattedDate(report.datetime)); //dd-mm-yyyy
+    parameters.append("lat", report.lat.toString());
+    parameters.append("lng", report.lng.toString());
+    parameters.append("foto1path", report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1));
+    parameters.append("foto2path", report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1));
+    parameters.append("foto3path", null);
+    parameters.append("foto4path", report.habitat.toString()); //"habitat_dormitorio"
+    parameters.append("privado", settings.privateCommits ? "si" : "no");
+    parameters.append("gpsdetect", null);
+    parameters.append("wifidetect", null);
+    parameters.append("mapdetect", "si");
+    parameters.append("terminado", null);
+    parameters.append("verificado", "No Verificado");
+
+    let result: string = await this.http.get<string>(this.baseURL + "addpuntomapa.php", { params: parameters }).toPromise();
+    //"Marcadores"{"serverId":"10194"}
+    if (!result.startsWith('"Marcadores"')) {
+      console.error(result);
+      throw "Invalid response";
+    }
+    result = result.substr(12);
+    let obj = JSON.parse(result);
+    return obj.serverId;
+  }
+
+  private async sendPicture(imagePath: string): Promise<boolean> {
+
+    let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+    let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+
+    const imgBlob = new Blob([await this.file.readAsArrayBuffer(currentName, correctPath)], {
+      type: "image/jpeg"
+    });
+    let formData: FormData = new FormData();
+
+    formData.append("uploaded_file", imgBlob);
+    let data: string = await this.http.post<string>(this.baseURL + "upload_file.php?usr=geovin_upload&pss=geovin_pass", formData).toPromise();
+    if (data != "success") {
+      console.error("Invalid response when posting photo");
+      throw data;
+    }
+    return true;
   }
 
 
