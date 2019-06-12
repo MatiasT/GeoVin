@@ -9,14 +9,33 @@ export class sightingReport {
   lng: number;
   habitat: Habitat;
 
-  reportID:Number;
-  verified:boolean;
+  reportID: Number;
+  verified: boolean;
+  sentFirstPicture: boolean;
+  sentSecondPicture: boolean;
+
+
+  public get state(): string {
+    if (this.reportID == null
+      || this.sentFirstPicture == false
+      || this.sentSecondPicture == false) {
+      return "Pending";
+    }
+    if(!this.verified)
+    {
+      return "Uploaded";
+    }
+    return "Verified";
+  }
+
   /**
    *
    */
   constructor() {
-    this.verified=false;
-    this.reportID=null;
+    this.verified = false;
+    this.sentFirstPicture = false;
+    this.sentSecondPicture = false;
+    this.reportID = null;
   }
   /*
   //this is the data i need to send.

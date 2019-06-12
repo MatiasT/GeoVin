@@ -19,15 +19,15 @@
       </ion-list>
   <ion-card *ngFor="let report of repository.getReports()">
     <ion-card-content>
-      <ion-item *ngIf="report.reportID==null" (click)="report.reportID=3">
+      <ion-item *ngIf="report.state=='Pending'" (click)="report.reportID=3;report.sentFirstPicture=true;report.sentSecondPicture=true">
         <ion-icon name="time" slot="start"></ion-icon>
         <ion-label>Upload Pending</ion-label>
       </ion-item>
-      <ion-item *ngIf="report.reportID!=null && !report.verified" (click)="report.verified=true">
+      <ion-item *ngIf="report.state='Uploaded'" (click)="report.verified=true">
         <ion-icon name="cloud-upload" slot="start"></ion-icon>
         <ion-label>Uploaded</ion-label>
       </ion-item>
-      <ion-item *ngIf="report.reportID!=null && report.verified">
+      <ion-item *ngIf="report.state='Verified'">
         <ion-icon name="cloud-done" slot="start"></ion-icon>
         <ion-label>Verified</ion-label>
       </ion-item>
