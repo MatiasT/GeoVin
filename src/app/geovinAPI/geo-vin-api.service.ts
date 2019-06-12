@@ -15,37 +15,56 @@ export class GeoVinAPIService {
   baseURL: string = "http://www.geovin.com.ar/connect2";
 
   constructor(private http: HttpClient, private repository: ReportRepositoryService, private network: Network, private file: File) {
- 
+
+  }
+
+  //TODO: have a reference to the running task, maybe?
+
+  private running: boolean = false;
+
+  /*
+  *This method starts the background process of commiting the reports.
+  *If this method was already called it does nothing.
+  */
+  public async startService() {
+    if (this.running) return;
+    this.running = true;
+    let self = this;
+    let step = async () => {
+      try {
+        await self.TryToSendReports();
+      } catch (error) {
+        //TODO: more handling?
+        console.error(error);
+      }
+      setTimeout(step, sleepTime);
+    }
+
+    //TODO: calling this function via setTimout clears the receiver, breaking everything.
+    step();
   }
   /*
   This method gets the pending data to be sent, the settings, and tryes to commit it to the server
   */
-  public async TryToSendReports() {
+  private async TryToSendReports() {
     let settings = this.repository.getSettings();
     if (!settings.commitOverWifi || //if the settings say i can commit over anything, or i can commit over wifi only and i am connected to wifi
       (settings.commitOverWifi && this.network.type == this.network.Connection.WIFI)) {
       this.repository.getPendingReports().forEach(async report => {
-        try {
-          if (report.reportID == null) {
-            report.reportID = await this.sendReport(report, settings);
-            //TODO: update the report?
-          }
-          if (report.sentFirstPicture) {
-            report.sentFirstPicture = await this.sendPicture(report.firstPicture);
-            //TODO: update the report?
-          }
-          if (report.sentSecondPicture) {
-            report.sentSecondPicture = await this.sendPicture(report.secondPicture);
-            //TODO: update the report?
-          }
-        } catch (error) {
-          console.error(error);
+        if (report.reportID == null) {
+          report.reportID = await this.sendReport(report, settings);
+          //TODO: update the report?
+        }
+        if (report.sentFirstPicture) {
+          report.sentFirstPicture = await this.sendPicture(report.firstPicture);
+          //TODO: update the report?
+        }
+        if (report.sentSecondPicture) {
+          report.sentSecondPicture = await this.sendPicture(report.secondPicture);
+          //TODO: update the report?
         }
       });
-
     }
-    //TODO: calling this function via setTimout clears the receiver, breaking everything.
-    setTimeout(this.TryToSendReports, sleepTime);
   }
   private GetFormattedDate(date: Date): string {
     var month = date.getMonth() + 1;
@@ -72,7 +91,7 @@ export class GeoVinAPIService {
     parameters.append("terminado", null);
     parameters.append("verificado", "No Verificado");
 
-    let result: string = await this.http.get<string>(this.baseURL + "addpuntomapa.php", { params: parameters }).toPromise();
+    let result: string = await this.http.get<string>(this.baseURL + "/addpuntomapa.php", { params: parameters }).toPromise();
     //"Marcadores"{"serverId":"10194"}
     if (!result.startsWith('"Marcadores"')) {
       console.error(result);
@@ -94,7 +113,7 @@ export class GeoVinAPIService {
     let formData: FormData = new FormData();
 
     formData.append("uploaded_file", imgBlob);
-    let data: string = await this.http.post<string>(this.baseURL + "upload_file.php?usr=geovin_upload&pss=geovin_pass", formData).toPromise();
+    let data: string = await this.http.post<string>(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", formData).toPromise();
     if (data != "success") {
       console.error("Invalid response when posting photo");
       throw data;
