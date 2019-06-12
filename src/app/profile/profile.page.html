@@ -5,6 +5,18 @@
 </ion-header>
 
 <ion-content>
+    <ion-list>
+        <ion-item>
+          <ion-label>Private reports</ion-label>
+          <ion-toggle [(ngModel)]="privateCommits"></ion-toggle>
+        </ion-item>
+      
+        <ion-item>
+          <ion-label>WiFi Only</ion-label>
+          <ion-toggle [(ngModel)]="commitOverWifi" ></ion-toggle>
+        </ion-item>
+       
+      </ion-list>
   <ion-card *ngFor="let report of repository.getReports()">
     <ion-card-content>
       <ion-item *ngIf="report.reportID==null" (click)="report.reportID=3">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ReportRepositoryService } from '../storage/report-repository.service';
 
 @Component({
@@ -8,11 +8,45 @@ import { ReportRepositoryService } from '../storage/report-repository.service';
 })
 export class ProfilePage implements OnInit {
 
-  constructor(public repository: ReportRepositoryService) { }
 
-  ngOnInit() {
-    
+  private _privateCommits: boolean;
+  public get privateCommits(): boolean {
+    return this._privateCommits;
+  }
+  @Input()
+  public set privateCommits(v: boolean) {
+    if (v != this._privateCommits) {
+      this._privateCommits = v;
+      let settings = this.repository.getSettings();
+      settings.privateCommits = v;
+      this.repository.updateSettings(settings);
+    }
   }
 
-  
+
+  private _commitOverWifi: boolean;
+  public get commitOverWifi(): boolean {
+    return this._commitOverWifi;
+  }
+  @Input()
+  public set commitOverWifi(v: boolean) {
+    if (v != this._commitOverWifi) {
+      this._commitOverWifi = v;
+      let settings = this.repository.getSettings();
+      settings.commitOverWifi = v;
+      this.repository.updateSettings(settings);
+    }
+  }
+
+  constructor(public repository: ReportRepositoryService) {
+    let settings = repository.getSettings();
+    this._commitOverWifi = settings.commitOverWifi;
+    this._privateCommits = settings.privateCommits;
+  }
+
+  ngOnInit() {
+
+  }
+
+
 }
