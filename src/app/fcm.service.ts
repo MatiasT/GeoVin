@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {FCM} from '@ionic-native/fcm/ngx'
+//import {FCM} from '@ionic-native/fcm/ngx'
 
 
 @Injectable({
@@ -8,11 +8,12 @@ import {FCM} from '@ionic-native/fcm/ngx'
 export class FCMService {
   private token: string="";
   
-  constructor(private fcm:FCM) {
-    fcm.getToken().then((token)=>{
+  constructor(/*private fcm:FCM */) {
+   /* fcm.getToken().then((token)=>{
       this.token=token;
     });
     fcm.onTokenRefresh().subscribe(token=>{this.token=token});
+    */
     //TODO: subscribe to topic.
     //fcm.subscribeToTopic()
     
