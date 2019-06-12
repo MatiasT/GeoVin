@@ -15,13 +15,12 @@ export class GeoVinAPIService {
   baseURL: string = "http://www.geovin.com.ar/connect2";
 
   constructor(private http: HttpClient, private repository: ReportRepositoryService, private network: Network, private file: File) {
-
-    this.TryToSendReports();
+ 
   }
   /*
   This method gets the pending data to be sent, the settings, and tryes to commit it to the server
   */
-  private async TryToSendReports() {
+  public async TryToSendReports() {
     let settings = this.repository.getSettings();
     if (!settings.commitOverWifi || //if the settings say i can commit over anything, or i can commit over wifi only and i am connected to wifi
       (settings.commitOverWifi && this.network.type == this.network.Connection.WIFI)) {
@@ -45,6 +44,7 @@ export class GeoVinAPIService {
       });
 
     }
+    //TODO: calling this function via setTimout clears the receiver, breaking everything.
     setTimeout(this.TryToSendReports, sleepTime);
   }
   private GetFormattedDate(date: Date): string {
