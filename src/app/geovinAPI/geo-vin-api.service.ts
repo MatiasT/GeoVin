@@ -111,12 +111,14 @@ export class GeoVinAPIService {
 
     let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
     let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-
-    const imgBlob = new Blob([await this.file.readAsArrayBuffer(currentName, correctPath)], {
+    //let fileArray = await this.file.readAsArrayBuffer(currentName, correctPath);
+    const imgBlob = new Blob([await this.file.readAsArrayBuffer( correctPath,currentName)], {
       type: "image/jpeg"
     });
 
-    let response = await this.http.post(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", { upload_file: imgBlob }, {});
+    //let response = await this.http.post(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", { upload_file: imgBlob }, {});
+
+    let response = await this.http.uploadFile(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass",{},{},imagePath,"upload_file");
 
     if (response.status != 200) { throw response; }
 
