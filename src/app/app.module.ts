@@ -13,6 +13,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from "@ionic-native/file/ngx";
 import { Network } from '@ionic-native/network/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { Network } from '@ionic-native/network/ngx';
     StatusBar,
     SplashScreen,
     Network,
+    HTTP,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HTTP } from "@ionic-native/http/ngx";
 import { locationReport } from './locationReport';
 import { ReportRepositoryService } from '../storage/report-repository.service';
 import { Network } from '@ionic-native/network/ngx';
@@ -14,7 +14,7 @@ const sleepTime = 10000;
 export class GeoVinAPIService {
   baseURL: string = "http://www.geovin.com.ar/connect2";
 
-  constructor(private http: HttpClient, private repository: ReportRepositoryService, private network: Network, private file: File) {
+  constructor(private http: HTTP, private repository: ReportRepositoryService, private network: Network, private file: File) {
 
   }
 
@@ -74,33 +74,35 @@ export class GeoVinAPIService {
     return day + "-" + month + "-" + year;
   }
   private async sendReport(report: sightingReport, settings: Settings): Promise<Number> {
-    let parameters = new HttpParams();
-    //TODO: login and username
-    parameters.append("username", null);
-    parameters.append("deviceID", "");
-    parameters.append("dateandtime", this.GetFormattedDate(report.datetime)); //dd-mm-yyyy
-    parameters.append("lat", report.lat.toString());
-    parameters.append("lng", report.lng.toString());
-    parameters.append("foto1path", report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1));
-    parameters.append("foto2path", report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1));
-    parameters.append("foto3path", null);
-    parameters.append("foto4path", report.habitat.toString()); //"habitat_dormitorio"
-    parameters.append("privado", settings.privateCommits ? "si" : "no");
-    parameters.append("gpsdetect", null);
-    parameters.append("wifidetect", null);
-    parameters.append("mapdetect", "si");
-    parameters.append("terminado", null);
-    parameters.append("verificado", "No Verificado");
-
-    let result: string = await this.http.get<string>(this.baseURL + "/addpuntomapa.php", { params: parameters }).toPromise();
-    //"Marcadores"{"serverId":"10194"}
-    if (!result.startsWith('"Marcadores"')) {
-      console.error(result);
-      throw "Invalid response";
-    }
-    result = result.substr(12);
-    let obj = JSON.parse(result);
-    return obj.serverId;
+    /*    let parameters = new HttpParams();
+        //TODO: login and username
+        parameters.append("username", null);
+        parameters.append("deviceID", "");
+        parameters.append("dateandtime", this.GetFormattedDate(report.datetime)); //dd-mm-yyyy
+        parameters.append("lat", report.lat.toString());
+        parameters.append("lng", report.lng.toString());
+        parameters.append("foto1path", report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1));
+        parameters.append("foto2path", report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1));
+        parameters.append("foto3path", null);
+        parameters.append("foto4path", report.habitat.toString()); //"habitat_dormitorio"
+        parameters.append("privado", settings.privateCommits ? "si" : "no");
+        parameters.append("gpsdetect", null);
+        parameters.append("wifidetect", null);
+        parameters.append("mapdetect", "si");
+        parameters.append("terminado", null);
+        parameters.append("verificado", "No Verificado");
+    
+        let result: string = await this.http.get<string>(this.baseURL + "/addpuntomapa.php", { params: parameters }).toPromise();
+        //"Marcadores"{"serverId":"10194"}
+        if (!result.startsWith('"Marcadores"')) {
+          console.error(result);
+          throw "Invalid response";
+        }
+        result = result.substr(12);
+        let obj = JSON.parse(result);
+        return obj.serverId;
+      */
+    return null;
   }
 
   private async sendPicture(imagePath: string): Promise<boolean> {
@@ -114,11 +116,12 @@ export class GeoVinAPIService {
     let formData: FormData = new FormData();
 
     formData.append("uploaded_file", imgBlob);
+    /*
     let data: string = await this.http.post<string>(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", formData).toPromise();
     if (data != "success") {
       console.error("Invalid response when posting photo");
       throw data;
-    }
+    }*/
     return true;
   }
 
@@ -134,26 +137,27 @@ export class GeoVinAPIService {
   }
   public GetAllReports() {
     return new Promise((res, rej) => {
-      this.http.get(this.baseURL + "/getallmapa.php", { responseType: 'text' }).toPromise().then(
-        (data: string) => {
-          //console.log(data); 
-          if (!data.startsWith('"GetMapaOk"')) {
-            //error
-            rej({ msg: "Invalid json received. ", data: data });
-          } else {
-            //trims that weird head before the json
+      this.http.get(this.baseURL + "/getallmapa.php", {}, {}).then(response => {
+        let data: string = response.data;
+        //console.log(data); 
+        if (!data.startsWith('"GetMapaOk"')) {
+          //error
+          rej({ msg: "Invalid json received. ", data: data });
+        } else {
+          //trims that weird head before the json
 
-            try {
-              let fixedContent = this.getReportJson(data);
-              let obj = JSON.parse(fixedContent);
-              res(obj.map(locationReport.FromObject));
-            } catch (e) {
-              rej(e);
-            }
-
+          try {
+            let fixedContent = this.getReportJson(data);
+            let obj = JSON.parse(fixedContent);
+            res(obj.map(locationReport.FromObject));
+          } catch (e) {
+            rej(e);
           }
-        },
-        (err) => { rej(err); });
+
+        }
+
+      }, err => rej(err));
     });
+
   }
 }
