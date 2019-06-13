@@ -56,11 +56,11 @@ export class GeoVinAPIService {
           report.reportID = await this.sendReport(report, settings);
           //TODO: update the report?
         }
-        if (report.sentFirstPicture) {
+        if (!report.sentFirstPicture) {
           report.sentFirstPicture = await this.sendPicture(report.firstPicture);
           //TODO: update the report?
         }
-        if (report.sentSecondPicture) {
+        if (!report.sentSecondPicture) {
           report.sentSecondPicture = await this.sendPicture(report.secondPicture);
           //TODO: update the report?
         }
@@ -75,20 +75,20 @@ export class GeoVinAPIService {
   }
   private async sendReport(report: sightingReport, settings: Settings): Promise<Number> {
     let result = await this.http.get(this.baseURL + "/addpuntomapa.php", {
-      username: null,
+      username: "null",
       deviceID: "",
       dateandtime: this.GetFormattedDate(report.datetime), //dd-mm-yyyy
       lat: report.lat.toString(),
       lng: report.lng.toString(),
       foto1path: report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1),
       foto2path: report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1),
-      foto3path: null,
+      foto3path: "null",
       foto4path: report.habitat.toString(), //"habitat_dormitorio"
       privado: settings.privateCommits ? "si" : "no",
-      gpsdetect: null,
-      wifidetect: null,
+      gpsdetect: "null",
+      wifidetect: "null",
       mapdetect: "si",
-      terminado: null,
+      terminado: "null",
       verificado: "No Verificado"
     }, {});
     if (result.status != 200) {
