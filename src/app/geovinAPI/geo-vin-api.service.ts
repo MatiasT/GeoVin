@@ -74,35 +74,37 @@ export class GeoVinAPIService {
     return day + "-" + month + "-" + year;
   }
   private async sendReport(report: sightingReport, settings: Settings): Promise<Number> {
-    /*    let parameters = new HttpParams();
-        //TODO: login and username
-        parameters.append("username", null);
-        parameters.append("deviceID", "");
-        parameters.append("dateandtime", this.GetFormattedDate(report.datetime)); //dd-mm-yyyy
-        parameters.append("lat", report.lat.toString());
-        parameters.append("lng", report.lng.toString());
-        parameters.append("foto1path", report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1));
-        parameters.append("foto2path", report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1));
-        parameters.append("foto3path", null);
-        parameters.append("foto4path", report.habitat.toString()); //"habitat_dormitorio"
-        parameters.append("privado", settings.privateCommits ? "si" : "no");
-        parameters.append("gpsdetect", null);
-        parameters.append("wifidetect", null);
-        parameters.append("mapdetect", "si");
-        parameters.append("terminado", null);
-        parameters.append("verificado", "No Verificado");
-    
-        let result: string = await this.http.get<string>(this.baseURL + "/addpuntomapa.php", { params: parameters }).toPromise();
-        //"Marcadores"{"serverId":"10194"}
-        if (!result.startsWith('"Marcadores"')) {
-          console.error(result);
-          throw "Invalid response";
-        }
-        result = result.substr(12);
-        let obj = JSON.parse(result);
-        return obj.serverId;
-      */
-    return null;
+    let result = await this.http.get(this.baseURL + "/addpuntomapa.php", {
+      username: null,
+      deviceID: "",
+      dateandtime: this.GetFormattedDate(report.datetime), //dd-mm-yyyy
+      lat: report.lat.toString(),
+      lng: report.lng.toString(),
+      foto1path: report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1),
+      foto2path: report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1),
+      foto3path: null,
+      foto4path: report.habitat.toString(), //"habitat_dormitorio"
+      privado: settings.privateCommits ? "si" : "no",
+      gpsdetect: null,
+      wifidetect: null,
+      mapdetect: "si",
+      terminado: null,
+      verificado: "No Verificado"
+    }, {});
+    if (result.status != 200) {
+      throw result;
+    }
+
+    let resultData: string = result.data;
+    //"Marcadores"{"serverId":"10194"}
+    if (!resultData.startsWith('"Marcadores"')) {
+      console.error(result);
+      throw "Invalid response";
+    }
+    resultData = resultData.substr(12);
+    let obj = JSON.parse(resultData);
+    return obj.serverId;
+
   }
 
   private async sendPicture(imagePath: string): Promise<boolean> {
@@ -113,15 +115,16 @@ export class GeoVinAPIService {
     const imgBlob = new Blob([await this.file.readAsArrayBuffer(currentName, correctPath)], {
       type: "image/jpeg"
     });
-    let formData: FormData = new FormData();
 
-    formData.append("uploaded_file", imgBlob);
-    /*
-    let data: string = await this.http.post<string>(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", formData).toPromise();
+    let response = await this.http.post(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", { upload_file: imgBlob }, {});
+
+    if (response.status != 200) { throw response; }
+
+    let data: string = response.data;
     if (data != "success") {
       console.error("Invalid response when posting photo");
       throw data;
-    }*/
+    }
     return true;
   }
 
