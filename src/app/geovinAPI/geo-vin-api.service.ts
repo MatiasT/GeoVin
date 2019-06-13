@@ -36,6 +36,7 @@ export class GeoVinAPIService {
       } catch (error) {
         //TODO: more handling?
         console.error(error);
+        debugger;
       }
       setTimeout(step, sleepTime);
     }
