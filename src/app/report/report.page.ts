@@ -128,6 +128,7 @@ export class ReportPage implements OnInit {
     //i need to save the pictures taken into the filesystem
     let report = new sightingReport();
     report.datetime = new Date();
+    report.username=this.repository.getUser().name;
 
     report.firstPicture = await this.saveImage(this.firstImagePath, report.username + this.printDate(report.datetime) + "_1.jpg");
     report.secondPicture = await this.saveImage(this.secondImagePath, report.username + this.printDate(report.datetime) + "_2.jpg");
