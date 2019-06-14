@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from "@ionic-native/http/ngx";
 import { locationReport } from './locationReport';
-import { ReportRepositoryService } from '../storage/report-repository.service';
+import { RepositoryService } from '../storage/repository.service';
 import { Network } from '@ionic-native/network/ngx';
 import { sightingReport } from '../storage/sightingReport';
 import { Settings } from '../storage/settings';
@@ -14,7 +14,7 @@ const sleepTime = 10000;
 export class GeoVinAPIService {
   baseURL: string = "http://www.geovin.com.ar/connect2";
 
-  constructor(private http: HTTP, private repository: ReportRepositoryService, private network: Network, private file: File) {
+  constructor(private http: HTTP, private repository: RepositoryService, private network: Network, private file: File) {
 
   }
 

@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { UIMapComponent } from '../uimap/uimap.component';
-import { ReportRepositoryService } from '../storage/report-repository.service';
+import { RepositoryService } from '../storage/repository.service';
 import { File } from "@ionic-native/file/ngx";
 import { sightingReport } from '../storage/sightingReport';
 import { Habitat } from '../storage/habitat';
@@ -28,7 +28,7 @@ export class ReportPage implements OnInit {
   /**
    *
    */
-  constructor(private camera: Camera, private repository: ReportRepositoryService, private file: File) {
+  constructor(private camera: Camera, private repository: RepositoryService, private file: File) {
     this.resetData();
   }
   private resetData() {

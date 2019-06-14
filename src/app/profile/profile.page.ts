@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ReportRepositoryService } from '../storage/report-repository.service';
+import { RepositoryService } from '../storage/repository.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +38,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  constructor(public repository: ReportRepositoryService) {
+  constructor(public repository: RepositoryService) {
     let settings = repository.getSettings();
     this._commitOverWifi = settings.commitOverWifi;
     this._privateCommits = settings.privateCommits;
