@@ -2,20 +2,22 @@ import { Injectable } from '@angular/core';
 import { sightingReport } from "./sightingReport";
 import { Settings } from './settings';
 import { User } from './user';
+import { NativeStorage } from '@ionic-native/native-storage/ngx'
+
+
 @Injectable({
   providedIn: 'root'
 })
 //TODO: rename this. It will centralize my persistance and as such the name should not be tied to reports.
 export class RepositoryService {
-
-
-  constructor() {
-    this.reports = new Array<sightingReport>();
-    this.settings = new Settings();
-  }
   private reports: sightingReport[];
   private settings: Settings;
   private user: User;
+
+  constructor(private storage: NativeStorage) {
+    this.reports = new Array<sightingReport>();
+    this.settings = new Settings();
+  }
 
   //TODO: make the getters async.
   getUser() {

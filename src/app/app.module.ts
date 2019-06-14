@@ -14,6 +14,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { File } from "@ionic-native/file/ngx";
 import { Network } from '@ionic-native/network/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { HTTP } from '@ionic-native/http/ngx';
     SplashScreen,
     Network,
     HTTP,
+    NativeStorage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
