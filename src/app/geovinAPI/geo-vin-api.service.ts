@@ -75,7 +75,7 @@ export class GeoVinAPIService {
   }
   private async sendReport(report: sightingReport, settings: Settings): Promise<Number> {
     let result = await this.http.get(this.baseURL + "/addpuntomapa.php", {
-      username: "null",
+      username: report.username,
       deviceID: "",
       dateandtime: this.GetFormattedDate(report.datetime), //dd-mm-yyyy
       lat: report.lat.toString(),
