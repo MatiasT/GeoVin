@@ -33,7 +33,7 @@ export class GeoVinAPIService {
     let running = false;
     let step = async () => {
       if (!running) {
-        running=true;
+        running = true;
         try {
           await self.TryToSendReports();
         } catch (error) {
@@ -41,7 +41,7 @@ export class GeoVinAPIService {
           console.error(error);
           debugger;
         }
-        running=false;
+        running = false;
       }
       setTimeout(step, sleepTime);
     }
@@ -57,17 +57,23 @@ export class GeoVinAPIService {
     if (!settings.commitOverWifi || //if the settings say i can commit over anything, or i can commit over wifi only and i am connected to wifi
       (settings.commitOverWifi && this.network.type == this.network.Connection.WIFI)) {
       this.repository.getPendingReports().forEach(async report => {
-        if (report.reportID == null) {
-          report.reportID = await this.sendReport(report, settings);
-          await this.repository.updateReports();
-        }
-        if (!report.sentFirstPicture) {
-          report.sentFirstPicture = await this.sendPicture(report.firstPicture);
-          await this.repository.updateReports();
-        }
-        if (!report.sentSecondPicture) {
-          report.sentSecondPicture = await this.sendPicture(report.secondPicture);
-          await this.repository.updateReports();
+        try {
+
+          if (report.reportID == null) {
+            report.reportID = await this.sendReport(report, settings);
+            await this.repository.updateReports();
+          }
+          if (!report.sentFirstPicture) {
+            report.sentFirstPicture = await this.sendPicture(report.firstPicture);
+            await this.repository.updateReports();
+          }
+          if (!report.sentSecondPicture) {
+            report.sentSecondPicture = await this.sendPicture(report.secondPicture);
+            await this.repository.updateReports();
+          }
+        } catch (error) {
+          //TODO: handle.
+          console.error(error);
         }
       });
     }
@@ -97,7 +103,8 @@ export class GeoVinAPIService {
       verificado: "No Verificado"
     }, {});
     if (result.status != 200) {
-      throw result;
+      console.log(result);
+      throw "Invalid status code";
     }
 
     let resultData: string = result.data;
@@ -129,8 +136,8 @@ export class GeoVinAPIService {
 
     let data: string = response.data;
     if (data != "success") {
-      console.error("Invalid response when posting photo");
-      throw data;
+      console.error(data);
+      throw "Invalid response when posting photo";
     }
     return true;
   }

@@ -34,8 +34,8 @@ export class RepositoryService {
     return this.getReports().filter(report => report.state == "Pending");
   }
   async addReport(report: sightingReport) {
-    //TODO: really save it to some storage
     this.reports.push(report);
+    await this.updateReports();
   }
 
   getSettings(): Settings {
