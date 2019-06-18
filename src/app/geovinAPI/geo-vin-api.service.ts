@@ -91,6 +91,7 @@ export class GeoVinAPIService {
       dateandtime: this.GetFormattedDate(report.datetime), //dd-mm-yyyy
       lat: report.lat.toString(),
       lng: report.lng.toString(),
+      valorVinchuca:"null",
       foto1path: report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1),
       foto2path: report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1),
       foto3path: "null",
