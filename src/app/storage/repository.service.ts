@@ -14,13 +14,32 @@ export class RepositoryService {
   private reports: sightingReport[];
   private settings: Settings;
   private user: User;
+  
+  private readyPromise:Promise<any>;
+  public get ready() : Promise<any> {
+    return this.readyPromise;
+  }
+  
 
   constructor(private storage: NativeStorage, private platform: Platform) {
     let self = this;
-    platform.ready().then(() => {
-      self.storage.getItem('reports').then((data) => { self.reports = data; }, (err) => { console.error(err); self.reports = new Array<sightingReport>(); });
-      self.storage.getItem('settings').then((data) => { self.settings = data; }, (err) => { console.error(err); self.settings = new Settings() });
-    });
+    self.readyPromise=new Promise(
+      (res)=>{
+        platform.ready().then(() => {
+          //the storage does not hold type info, i'll create my own instances here.
+          self.storage.getItem('reports').then((data) => {
+            self.reports = data.map((d: any) => Object.assign(new sightingReport(), d));
+          }, (err) => {
+            console.error(err);
+            self.reports = new Array<sightingReport>();
+          });
+          self.storage.getItem('settings').then(
+            (data) => { self.settings = Object.assign(new Settings(), data); },
+            (err) => { console.error(err); self.settings = new Settings() });
+          res(self);
+        });
+
+      });
   }
 
   //TODO: make the getters async.

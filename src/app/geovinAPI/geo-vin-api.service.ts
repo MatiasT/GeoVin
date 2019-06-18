@@ -29,6 +29,7 @@ export class GeoVinAPIService {
   public async startService() {
     if (this.running) return;
     this.running = true;
+    await this.repository.ready;
     let self = this;
     let running = false;
     let step = async () => {
