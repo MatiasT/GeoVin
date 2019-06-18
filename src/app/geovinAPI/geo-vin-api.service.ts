@@ -132,7 +132,7 @@ export class GeoVinAPIService {
 
     //let response = await this.http.post(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", { upload_file: imgBlob }, {});
 
-    let response = await this.http.uploadFile(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", {}, {}, imagePath, "upload_file");
+    let response = await this.http.uploadFile(this.baseURL + "/upload_file.php?usr=geovin_upload&pss=geovin_pass", {}, {}, imagePath, "uploaded_file");
 
     if (response.status != 200) { throw response; }
 
