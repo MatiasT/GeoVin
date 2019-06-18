@@ -92,8 +92,9 @@ export class GeoVinAPIService {
       lat: report.lat.toString(),
       lng: report.lng.toString(),
       valorVinchuca:"null",
-      foto1path: report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1),
-      foto2path: report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1),
+      //the regex trims the extension.
+      foto1path: report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""),
+      foto2path: report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""),
       foto3path: "null",
       foto4path: report.habitat.toString(), //"habitat_dormitorio"
       privado: settings.privateCommits ? "si" : "no",
