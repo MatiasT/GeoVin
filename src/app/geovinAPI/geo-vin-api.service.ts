@@ -30,13 +30,18 @@ export class GeoVinAPIService {
     if (this.running) return;
     this.running = true;
     let self = this;
+    let running = false;
     let step = async () => {
-      try {
-        await self.TryToSendReports();
-      } catch (error) {
-        //TODO: more handling?
-        console.error(error);
-        debugger;
+      if (!running) {
+        running=true;
+        try {
+          await self.TryToSendReports();
+        } catch (error) {
+          //TODO: more handling?
+          console.error(error);
+          debugger;
+        }
+        running=false;
       }
       setTimeout(step, sleepTime);
     }
