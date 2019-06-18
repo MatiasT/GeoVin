@@ -137,7 +137,7 @@ export class GeoVinAPIService {
     if (response.status != 200) { throw response; }
 
     let data: string = response.data;
-    if (data != "success") {
+    if (data != "\r\nsuccess") {
       console.error(data);
       throw "Invalid response when posting photo";
     }
