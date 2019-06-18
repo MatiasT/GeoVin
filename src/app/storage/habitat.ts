@@ -10,4 +10,7 @@ export class Habitat {
         this.subHabitat = subHabitat;
         this.otherHabitat = otherHabitat;
     }
+    public toString(): string {
+        return "habitat_" + this.subHabitat.toLowerCase();
+    }
 }
