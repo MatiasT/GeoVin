@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
-//TODO: rename this. It will centralize my persistance and as such the name should not be tied to reports.
+
 export class RepositoryService {
   private reports: sightingReport[];
   private settings: Settings;

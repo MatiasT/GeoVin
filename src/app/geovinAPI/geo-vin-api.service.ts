@@ -46,8 +46,6 @@ export class GeoVinAPIService {
       }
       setTimeout(step, sleepTime);
     }
-
-    //TODO: calling this function via setTimout clears the receiver, breaking everything.
     step();
   }
   /*
