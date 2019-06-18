@@ -18,8 +18,8 @@ export class RepositoryService {
   constructor(private storage: NativeStorage, private platform: Platform) {
     let self = this;
     platform.ready().then(() => {
-      this.storage.getItem('reports').then((data) => { self.reports = data; }, (err) => { console.error(err); self.reports = new Array<sightingReport>(); });
-      this.storage.getItem('settings').then((data) => { self.settings = data; }, (err) => { console.error(err); self.settings = new Settings() });
+      self.storage.getItem('reports').then((data) => { self.reports = data; }, (err) => { console.error(err); self.reports = new Array<sightingReport>(); });
+      self.storage.getItem('settings').then((data) => { self.settings = data; }, (err) => { console.error(err); self.settings = new Settings() });
     });
   }
 
