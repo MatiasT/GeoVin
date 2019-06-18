@@ -15,8 +15,11 @@ export class RepositoryService {
   private user: User;
 
   constructor(private storage: NativeStorage) {
-    this.reports = new Array<sightingReport>();
-    this.settings = new Settings();
+    let self = this;
+    this.storage.getItem('reports').then(
+      (data) => { self.reports = data; }, (err) => { console.error(err); self.reports = new Array<sightingReport>(); });
+    this.storage.getItem('settings').then((data) => { self.settings = data; }, (err) => { console.error(err); self.settings = new Settings() });
+
   }
 
   //TODO: make the getters async.
@@ -28,7 +31,6 @@ export class RepositoryService {
     return this.reports;
   }
   getPendingReports(): sightingReport[] {
-
     return this.getReports().filter(report => report.state == "Pending");
   }
   async addReport(report: sightingReport) {
@@ -41,5 +43,9 @@ export class RepositoryService {
   }
   async updateSettings(settings: Settings) {
     this.settings = settings;
+    await this.storage.setItem("settings",this.settings);
+  }
+  async updateReports(){
+    await this.storage.setItem("reports",this.reports)
   }
 }
