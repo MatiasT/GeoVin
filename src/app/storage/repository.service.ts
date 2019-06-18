@@ -3,6 +3,7 @@ import { sightingReport } from "./sightingReport";
 import { Settings } from './settings';
 import { User } from './user';
 import { NativeStorage } from '@ionic-native/native-storage/ngx'
+import { Platform } from '@ionic/angular';
 
 
 @Injectable({
@@ -14,12 +15,12 @@ export class RepositoryService {
   private settings: Settings;
   private user: User;
 
-  constructor(private storage: NativeStorage) {
+  constructor(private storage: NativeStorage, private platform: Platform) {
     let self = this;
-    this.storage.getItem('reports').then(
-      (data) => { self.reports = data; }, (err) => { console.error(err); self.reports = new Array<sightingReport>(); });
-    this.storage.getItem('settings').then((data) => { self.settings = data; }, (err) => { console.error(err); self.settings = new Settings() });
-
+    platform.ready().then(() => {
+      this.storage.getItem('reports').then((data) => { self.reports = data; }, (err) => { console.error(err); self.reports = new Array<sightingReport>(); });
+      this.storage.getItem('settings').then((data) => { self.settings = data; }, (err) => { console.error(err); self.settings = new Settings() });
+    });
   }
 
   //TODO: make the getters async.
@@ -43,9 +44,9 @@ export class RepositoryService {
   }
   async updateSettings(settings: Settings) {
     this.settings = settings;
-    await this.storage.setItem("settings",this.settings);
+    await this.storage.setItem("settings", this.settings);
   }
-  async updateReports(){
-    await this.storage.setItem("reports",this.reports)
+  async updateReports() {
+    await this.storage.setItem("reports", this.reports)
   }
 }
