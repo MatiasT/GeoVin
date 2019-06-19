@@ -54,7 +54,7 @@ getPendingReports(): sightingReport[] {
   return this.getReports().filter(report => report.state == "Pending");
 }
 async addReport(report: sightingReport) {
-  this.reports.push(report);
+  this.reports.unshift(report);
   await this.updateReports();
 }
 
