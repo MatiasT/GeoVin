@@ -53,10 +53,10 @@ export class ReportPage implements OnInit {
     icon: icon({
       iconUrl: 'assets/img/marker.svg',
       shadowUrl: 'assets/img/marker-shadow.svg',
-      iconSize: [20, 20], // size of the icon
-      shadowSize: [30, 20], // size of the shadow
-      iconAnchor: [10, 10], // point of the icon which will correspond to marker's location
-      shadowAnchor: [14, 10],  // the same for the shadow
+      iconSize: [30, 30], // size of the icon
+      shadowSize: [45, 40], // size of the shadow
+      iconAnchor: [15, 15], // point of the icon which will correspond to marker's location
+      shadowAnchor: [20, 20],  // the same for the shadow
       popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     })
   };

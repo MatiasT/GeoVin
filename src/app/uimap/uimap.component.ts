@@ -40,10 +40,10 @@ export class UIMapComponent implements AfterViewChecked, AfterViewInit {
       icon: icon({
         iconUrl: 'assets/img/person.svg',
         shadowUrl: 'assets/img/person-shadow.svg',
-        iconSize: [20, 35], // size of the icon
-        shadowSize: [25, 30], // size of the shadow
-        iconAnchor: [10, 34], // point of the icon which will correspond to marker's location
-        shadowAnchor: [4, 29],  // the same for the shadow
+        iconSize: [30, 52], // size of the icon
+        shadowSize: [38, 45], // size of the shadow
+        iconAnchor: [15, 50], // point of the icon which will correspond to marker's location
+        shadowAnchor: [6, 48],  // the same for the shadow
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
       })
     };
