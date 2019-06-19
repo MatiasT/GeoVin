@@ -1,9 +1,9 @@
 //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
 import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup } from "leaflet"
 import "leaflet.markercluster";
-import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, Input } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 
 
@@ -14,7 +14,23 @@ import { Observable } from 'rxjs';
   providers: [Geolocation],
 })
 export class UIMapComponent implements OnInit, AfterViewChecked {
-  @ViewChild("mapdiv")mapdiv:ElementRef;
+
+
+  private _showUser: boolean = false;
+  private geolocationSubscription: Subscription;
+  private initialized: boolean;
+  public get showUser(): boolean {
+    return this._showUser;
+  }
+  @Input()
+  public set showUser(v: boolean) {
+    if(this.initialized && v!=this._showUser){
+      v?this.startShowingUser():this.stopShowingUser();
+    }
+    this._showUser = v;
+  }
+
+  @ViewChild("mapdiv") mapdiv: ElementRef;
   map: Map;
   watch: Observable<Geoposition>;
   //TODO: check the type of the marker.
@@ -26,27 +42,50 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
     this.refresh();
   }
   ngOnInit(): void {
-    let self = this; 
+    let self = this;
     this.loadMap()
       .then(() => {
-        self.userMarker = self.AddCenteredMarker();
-        self.watch = self.geolocation.watchPosition();
-        self.watch.subscribe((data) => {
-          // data can be a set of coordinates, or an error (if an error occurred).
-          // data.coords.latitude
-          // data.coords.longitude
-          self.userMarker.setLatLng([data.coords.latitude, data.coords.longitude]).update();
-        }, (error) => {
-          console.error(error);
-        }
-          , () => { console.log("completed"); });
-
+        self.initialized=true;
+        if (self.showUser) self.startShowingUser();
       });
 
   }
-  refresh() { 
-    if(this.map){
-     this.map.invalidateSize(false);
+  refresh() {
+    if (this.map) {
+      this.map.invalidateSize(false);
+    }
+  }
+
+  private startShowingUser() {
+    if(this.geolocationSubscription)
+    {
+      console.log("Called startShowingUser while the subscription was already made. Please call stop before calling start again");
+      return; //already running
+    }
+    
+    this.userMarker = this.AddCenteredMarker();
+    this.watch = this.geolocation.watchPosition();
+    this.geolocationSubscription = this.watch.subscribe((data) => {
+      // data can be a set of coordinates, or an error (if an error occurred).
+      // data.coords.latitude
+      // data.coords.longitude
+      this.userMarker.setLatLng([data.coords.latitude, data.coords.longitude]).update();
+    }, (error) => {
+      console.error(error);
+    }, () => { console.log("completed"); });
+
+  }
+  private stopShowingUser() {
+    if (this.userMarker) {
+      this.RemoveMarker(this.userMarker);
+      this.userMarker = null;
+    }
+    if (this.geolocationSubscription) {
+      this.geolocationSubscription.unsubscribe();
+      this.geolocationSubscription = null;
+    }
+    if (this.watch) {
+      this.watch = null;
     }
   }
   private loadMap(): Promise<any> {
@@ -73,14 +112,18 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
     m.addTo(this.map);
     return m;
   }
-
+  public RemoveMarker(marker) {
+    this.map.removeLayer(marker);
+  }
   //TODO: i think a good idea would be to provide a batch add. it would speed up the map usage
   public AddClusteredMarker(location) {
     let m = marker(location);
     this.markerCluster.addLayer(m);
     return m;
   }
-  
+  public RemoveMarkerFromCluster(marker) {
+    this.markerCluster.removeLayer(marker);
+  }
 
-  //TODO: I should be able to configure if i want an user marker. 
+
 }
