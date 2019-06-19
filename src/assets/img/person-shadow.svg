@@ -1,0 +1,24 @@
+<svg width="25" height="30" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter height="200%" width="200%" y="-50%" x="-50%" id="svg_2_blur">
+   <feGaussianBlur stdDeviation="2.2" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="32" width="27" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g filter="url(#svg_2_blur)" stroke="null" opacity="0.52" transform="rotate(31.7104434967041 8.765806198120123,22.419973373413086) " id="svg_2">
+   <g stroke="null" y="-1842.072811" x="-3342.432991" id="svg_1" fill="#4CE600" transform="matrix(2.8777028374143634,0,0,2.918403286931236,9603.666486730745,5345.958100537067) ">
+    <svg stroke="null" stroke-width="0" fill="#000000" id="svg_3" viewBox="0 0 100 100" y="-1841.627141" x="-3347.222221" xmlns:xlink="http://www.w3.org/1999/xlink">
+     <g stroke="null" id="svg_4">
+      <circle stroke="null" stroke-width="0" fill="#000000" id="svg_5" r="6.1" cy="34.7" cx="50"/>
+      <path stroke="null" stroke-width="0" fill="#000000" id="svg_6" d="m50,42.9c-5.5,0 -10,4.5 -10,10c0,5.5 4.5,18.5 10,18.5s10,-12.9 10,-18.5c0,-5.5 -4.5,-10 -10,-10z"/>
+     </g>
+    </svg>
+   </g>
+  </g>
+ </g>
+</svg>

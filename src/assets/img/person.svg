@@ -1,0 +1,20 @@
+<svg width="20" height="35" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="37" width="22" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g stroke="null" id="svg_2">
+   <g stroke="null" y="-1845.995052" x="-3346.562017" id="svg_1" fill="#4CE600" transform="matrix(3.687448041013997,0,0,3.687448041013997,12303.323233102215,6745.44980236307) ">
+    <svg stroke="null" id="svg_3" viewBox="0 0 100 100" y="-1842.054474" x="-3343.82967" xmlns:xlink="http://www.w3.org/1999/xlink">
+     <g stroke="null" id="svg_4">
+      <circle stroke="null" id="svg_5" r="6.1" cy="34.7" cx="50"/>
+      <path stroke="null" id="svg_6" d="m50,42.9c-5.5,0 -10,4.5 -10,10c0,5.5 4.5,18.5 10,18.5s10,-12.9 10,-18.5c0,-5.5 -4.5,-10 -10,-10z"/>
+     </g>
+    </svg>
+   </g>
+  </g>
+ </g>
+</svg>

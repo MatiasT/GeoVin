@@ -1,5 +1,5 @@
 //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
-import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup } from "leaflet"
+import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup, MarkerOptions, icon } from "leaflet"
 import "leaflet.markercluster";
 import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, Input } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
@@ -24,8 +24,8 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
   }
   @Input()
   public set showUser(v: boolean) {
-    if(this.initialized && v!=this._showUser){
-      v?this.startShowingUser():this.stopShowingUser();
+    if (this.initialized && v != this._showUser) {
+      v ? this.startShowingUser() : this.stopShowingUser();
     }
     this._showUser = v;
   }
@@ -36,7 +36,21 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
   //TODO: check the type of the marker.
   userMarker: any;
   markerCluster: MarkerClusterGroup;
-  constructor(private geolocation: Geolocation) { }
+  userMarkerOptions: any;
+  constructor(private geolocation: Geolocation) {
+    this.userMarkerOptions = {
+      icon: icon({
+        iconUrl: 'assets/img/person.svg',
+        shadowUrl: 'assets/img/person-shadow.svg',
+        iconSize: [20,35], // size of the icon
+        shadowSize: [25, 30], // size of the shadow
+        iconAnchor: [10,34], // point of the icon which will correspond to marker's location
+        shadowAnchor: [4, 29],  // the same for the shadow
+        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+      })
+    };
+
+  }
 
   ngAfterViewChecked(): void {
     this.refresh();
@@ -45,7 +59,7 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
     let self = this;
     this.loadMap()
       .then(() => {
-        self.initialized=true;
+        self.initialized = true;
         if (self.showUser) self.startShowingUser();
       });
 
@@ -57,13 +71,12 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
   }
 
   private startShowingUser() {
-    if(this.geolocationSubscription)
-    {
+    if (this.geolocationSubscription) {
       console.log("Called startShowingUser while the subscription was already made. Please call stop before calling start again");
       return; //already running
     }
-    
-    this.userMarker = this.AddCenteredMarker();
+
+    this.userMarker = this.AddCenteredMarker(this.userMarkerOptions);
     this.watch = this.geolocation.watchPosition();
     this.geolocationSubscription = this.watch.subscribe((data) => {
       // data can be a set of coordinates, or an error (if an error occurred).
@@ -104,11 +117,11 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
       resolve(true);
     });
   }
-  public AddCenteredMarker() {
-    return this.AddMarker(this.map.getCenter());
+  public AddCenteredMarker(options?: MarkerOptions) {
+    return this.AddMarker(this.map.getCenter(), options);
   }
-  public AddMarker(location) {
-    let m = marker(location);
+  public AddMarker(location, options?: MarkerOptions) {
+    let m = marker(location, options);
     m.addTo(this.map);
     return m;
   }
