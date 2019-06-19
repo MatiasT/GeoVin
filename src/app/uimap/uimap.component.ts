@@ -1,7 +1,7 @@
 //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
 import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup, MarkerOptions, icon } from "leaflet"
 import "leaflet.markercluster";
-import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { Observable, Subscription } from 'rxjs';
 
@@ -13,9 +13,7 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./uimap.component.scss'],
   providers: [Geolocation],
 })
-export class UIMapComponent implements OnInit, AfterViewChecked {
-
-
+export class UIMapComponent implements AfterViewChecked, AfterViewInit {
   private _showUser: boolean = false;
   private geolocationSubscription: Subscription;
   private initialized: boolean;
@@ -42,9 +40,9 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
       icon: icon({
         iconUrl: 'assets/img/person.svg',
         shadowUrl: 'assets/img/person-shadow.svg',
-        iconSize: [20,35], // size of the icon
+        iconSize: [20, 35], // size of the icon
         shadowSize: [25, 30], // size of the shadow
-        iconAnchor: [10,34], // point of the icon which will correspond to marker's location
+        iconAnchor: [10, 34], // point of the icon which will correspond to marker's location
         shadowAnchor: [4, 29],  // the same for the shadow
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
       })
@@ -55,15 +53,15 @@ export class UIMapComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     this.refresh();
   }
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     let self = this;
     this.loadMap()
       .then(() => {
         self.initialized = true;
         if (self.showUser) self.startShowingUser();
       });
-
   }
+
   refresh() {
     if (this.map) {
       this.map.invalidateSize(false);
