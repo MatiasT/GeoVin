@@ -14,7 +14,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private api:GeoVinAPIService
+    private api: GeoVinAPIService
   ) {
     this.initializeApp();
   }
@@ -22,8 +22,8 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.api.startService();
+      this.api.startService()
+        .then(() => { this.splashScreen.hide(); });
     });
   }
 }
