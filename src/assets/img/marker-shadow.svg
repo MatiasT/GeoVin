@@ -1,0 +1,21 @@
+<svg width="29.999999999999996" height="20" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter id="svg_2_blur">
+   <feGaussianBlur stdDeviation="0.8" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="22" width="32" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g opacity="0.51" filter="url(#svg_2_blur)" stroke="null" id="svg_2">
+   <g stroke="null" y="-436.064032" x="-852.361479" id="svg_1" fill="#FF0000" transform="matrix(1.5377937214944764,0,0,0.8278660742483955,1303.682854304262,364.4743118224501) ">
+    <svg fill="#000000" stroke="null" id="svg_3" viewBox="0 0 100 100" y="-435.959391" x="-852.361479" xmlns:xlink="http://www.w3.org/1999/xlink">
+     <path stroke="null" id="svg_4" d="m58.077,81.292c11.324,-2.943 20.24,-11.858 23.185,-23.184l13.645,-8.178l-13.645,-8.178c-2.945,-11.322 -11.858,-20.236 -23.181,-23.182l-8.175,-13.64l-8.175,13.64c-11.322,2.946 -20.235,11.86 -23.18,23.183l-13.645,8.178l13.645,8.178c2.945,11.325 11.86,20.24 23.185,23.184l8.171,13.639l8.17,-13.64zm-27.972,-31.361c0,-10.935 8.866,-19.798 19.801,-19.798c10.936,0 19.801,8.863 19.801,19.798s-8.865,19.798 -19.801,19.798c-10.934,0 -19.801,-8.864 -19.801,-19.798z" fill="#000000"/>
+    </svg>
+   </g>
+  </g>
+ </g>
+</svg>

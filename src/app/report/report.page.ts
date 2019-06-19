@@ -7,6 +7,7 @@ import { File } from "@ionic-native/file/ngx";
 import { sightingReport } from '../storage/sightingReport';
 import { Habitat } from '../storage/habitat';
 import {WebView} from "@ionic-native/ionic-webview";
+import { icon } from 'leaflet';
 const emptyImagePath = "assets/camera.svg";
 
 @Component({
@@ -47,6 +48,18 @@ export class ReportPage implements OnInit {
     mediaType: this.camera.MediaType.PICTURE,
     saveToPhotoAlbum: false
   }
+
+  private locationMarkerOptions= {
+    icon: icon({
+      iconUrl: 'assets/img/marker.svg',
+      shadowUrl: 'assets/img/marker-shadow.svg',
+      iconSize: [20, 20], // size of the icon
+      shadowSize: [30, 20], // size of the shadow
+      iconAnchor: [10, 10], // point of the icon which will correspond to marker's location
+      shadowAnchor: [14, 10],  // the same for the shadow
+      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    })
+  };
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
   @ViewChild("slider") slider: IonSlides;
   slideOpts = {
@@ -60,8 +73,9 @@ export class ReportPage implements OnInit {
   async showMap() {
     //TODO: pre-load map to ensure the first transition is not as bumpy
     await this.next();
+
     if (this.locationMarker == null) {
-      this.locationMarker = this.map.AddCenteredMarker();
+      this.locationMarker = this.map.AddCenteredMarker(this.locationMarkerOptions);
       this.map.map.on("move", (e) => {
         this.locationMarker
           .setLatLng(this.map.map.getCenter()).update()
