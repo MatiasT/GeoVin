@@ -1,24 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="report.state=='Pending'">
-      <ion-icon name="time" slot="start"></ion-icon>
-      <ion-label>Upload Pending</ion-label>
-    </ion-title>
-    <ion-title *ngIf="report.state=='Uploaded'">
-      <ion-icon name="cloud-upload" slot="start"></ion-icon>
-      <ion-label>Uploaded</ion-label>
-    </ion-title>
-    <ion-title *ngIf="report.state=='Verified'">
-      <ion-icon name="cloud-done" slot="start"></ion-icon>
-      <ion-label>Verified</ion-label>
-    </ion-title>
+    <ion-button slot="start" fill="clear" (click)="back()">
+      <ion-icon name="arrow-back" slot="start"></ion-icon>
+      <ion-label>Back</ion-label>
+    </ion-button>
+
+    <ng-container [ngSwitch]="report.state">
+      <ng-container *ngSwitchCase="'Pending'">
+        <ion-icon name="time" size="large" slot="start"></ion-icon>
+        <ion-title>Upload Pending</ion-title>
+      </ng-container>
+      <ng-container *ngSwitchCase="'Uploaded'">
+          <ion-icon name="cloud-upload" size="large" slot="start"></ion-icon>
+          <ion-title>Uploaded</ion-title>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Verified'">
+            <ion-icon name="cloud-done" size="large" slot="start"></ion-icon>
+            <ion-title>Verified</ion-title>
+          </ng-container>
+    </ng-container>
+ 
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-item>
     <ion-icon name="calendar" slot="start"></ion-icon>
-    <ion-label>Date: {{report.datetime}}</ion-label>
+    <ion-label>Date: {{report.datetime.toLocaleString()}}</ion-label>
   </ion-item>
   <ion-item>
     <ion-icon name="flask" slot="start"></ion-icon>

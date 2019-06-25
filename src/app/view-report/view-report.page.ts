@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { sightingReport } from '../storage/sightingReport';
 import { UIMapComponent } from '../uimap/uimap.component';
+import { Components } from '@ionic/core';
 
 @Component({
   selector: 'app-view-report',
@@ -27,6 +28,8 @@ export class ViewReportPage implements AfterViewInit {
     this._report = v;
   }
 
+  @Input() modal: Components.IonModal;
+
   @ViewChild("dataMap") dataMap: UIMapComponent;
 
   updateMarker() {
@@ -41,5 +44,7 @@ export class ViewReportPage implements AfterViewInit {
   ngOnInit() {
 
   }
-
+  public back() {
+    this.modal.dismiss();
+  }
 }
