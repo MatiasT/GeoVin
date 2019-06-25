@@ -1,5 +1,5 @@
 //(INFO): library reference at https://leafletjs.com/reference-1.4.0.html
-import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup, MarkerOptions, icon } from "leaflet"
+import { Map, tileLayer, marker, MarkerClusterGroup, markerClusterGroup, MarkerOptions, icon, LatLngExpression } from "leaflet"
 import "leaflet.markercluster";
 import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
@@ -118,7 +118,7 @@ export class UIMapComponent implements AfterViewChecked, AfterViewInit {
   public AddCenteredMarker(options?: MarkerOptions) {
     return this.AddMarker(this.map.getCenter(), options);
   }
-  public AddMarker(location, options?: MarkerOptions) {
+  public AddMarker(location:LatLngExpression, options?: MarkerOptions) {
     let m = marker(location, options);
     m.addTo(this.map);
     return m;
@@ -135,6 +135,9 @@ export class UIMapComponent implements AfterViewChecked, AfterViewInit {
   public RemoveMarkerFromCluster(marker) {
     this.markerCluster.removeLayer(marker);
   }
-
+  public setView(center:LatLngExpression,zoom:number=4)
+  {
+    this.map.setView(center,zoom);
+  }
 
 }
