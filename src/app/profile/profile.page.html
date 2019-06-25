@@ -17,7 +17,7 @@
     </ion-item>
 
   </ion-list>
-  <ion-card *ngFor="let report of repository.getReports()" (click)="showReport(report)">
+  <ion-card *ngFor="let report of reports" (click)="showReport(report)">
     <ion-card-content>
       <ion-item *ngIf="report.state=='Pending'">
         <ion-icon name="time" slot="start"></ion-icon>

@@ -52,10 +52,10 @@ export class GeoVinAPIService {
   This method gets the pending data to be sent, the settings, and tryes to commit it to the server
   */
   private async TryToSendReports() {
-    let settings = this.repository.getSettings();
+    let settings = await this.repository.getSettings();
     if (!settings.commitOverWifi || //if the settings say i can commit over anything, or i can commit over wifi only and i am connected to wifi
       (settings.commitOverWifi && this.network.type == this.network.Connection.WIFI)) {
-      this.repository.getPendingReports().forEach(async report => {
+      (await this.repository.getPendingReports()).forEach(async report => {
         try {
 
           if (report.reportID == null) {

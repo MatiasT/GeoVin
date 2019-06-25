@@ -47,23 +47,26 @@ export class RepositoryService {
     this.settings = Object.assign(new Settings(), await this.storage.getItem('settings'));
     return this;
   }
-  //TODO: make the getters async.
-  getUser() {
+
+  async getUser() {
+    await this.readyPromise;
     if (!this.user) return User.EmptyUser;
     return this.user;
   }
-  getReports(): sightingReport[] {
+  async getReports() {
+    await this.readyPromise
     return this.reports;
   }
-  getPendingReports(): sightingReport[] {
-    return this.getReports().filter(report => report.state == "Pending");
+  async getPendingReports() {
+    return (await this.getReports()).filter(report => report.state == "Pending");
   }
   async addReport(report: sightingReport) {
     this.reports.unshift(report);
     await this.updateReports();
   }
 
-  getSettings(): Settings {
+  async   getSettings() {
+    await this.readyPromise;
     return this.settings;
   }
   async updateSettings(settings: Settings) {

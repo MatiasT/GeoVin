@@ -19,15 +19,19 @@ export class ProfilePage implements OnInit {
   @Input()
   public set privateCommits(v: boolean) {
     if (v != this._privateCommits) {
+      let self = this;
       this._privateCommits = v;
-      let settings = this.repository.getSettings();
-      settings.privateCommits = v;
-      this.repository.updateSettings(settings);
+      this.repository.getSettings().then((settings) => {
+        settings.privateCommits = v;
+        this.repository.updateSettings(settings);
+      });
+
     }
   }
 
 
   private _commitOverWifi: boolean;
+  private reports: sightingReport[];
   public get commitOverWifi(): boolean {
     return this._commitOverWifi;
   }
@@ -35,30 +39,39 @@ export class ProfilePage implements OnInit {
   public set commitOverWifi(v: boolean) {
     if (v != this._commitOverWifi) {
       this._commitOverWifi = v;
-      let settings = this.repository.getSettings();
-      settings.commitOverWifi = v;
-      this.repository.updateSettings(settings);
+      this.repository.getSettings().then((settings) => {
+        settings.commitOverWifi = v;
+        this.repository.updateSettings(settings);
+      });
     }
   }
 
-  constructor(public repository: RepositoryService, private modalController:ModalController) {
-    let settings = repository.getSettings();
+  constructor(public repository: RepositoryService, private modalController: ModalController) {
+    this.reports = [];
+    let self=this;
+    //TODO: this is a hack to go around the async that i inserted into the getReports
+    let update = async () => {
+      await repository.ready;
+      self.reports=await repository.getReports();
+      setTimeout(update,10000);
+    }
+    update();
+  }
+
+  async ngOnInit() {
+    let settings = await this.repository.getSettings();
     this._commitOverWifi = settings.commitOverWifi;
     this._privateCommits = settings.privateCommits;
   }
 
-  ngOnInit() {
-
-  }
-
-  public async showReport(report:sightingReport){
+  public async showReport(report: sightingReport) {
     const modal = await this.modalController
-    .create(
-      {
-        animated:true,
-        component:ViewReportPage,
-        componentProps:{report:report}
-      });
+      .create(
+        {
+          animated: true,
+          component: ViewReportPage,
+          componentProps: { report: report }
+        });
     await modal.present();
   }
 
