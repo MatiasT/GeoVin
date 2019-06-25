@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ViewReportPage } from './view-report.page';
+import { UIMapModule } from '../uimap/uimap.module';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    UIMapModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ViewReportPage]

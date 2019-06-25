@@ -1,9 +1,28 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{report.state}}</ion-title>
+    <ion-title *ngIf="report.state=='Pending'">
+      <ion-icon name="time" slot="start"></ion-icon>
+      <ion-label>Upload Pending</ion-label>
+    </ion-title>
+    <ion-title *ngIf="report.state=='Uploaded'">
+      <ion-icon name="cloud-upload" slot="start"></ion-icon>
+      <ion-label>Uploaded</ion-label>
+    </ion-title>
+    <ion-title *ngIf="report.state=='Verified'">
+      <ion-icon name="cloud-done" slot="start"></ion-icon>
+      <ion-label>Verified</ion-label>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-item>
+    <ion-icon name="calendar" slot="start"></ion-icon>
+    <ion-label>Date: {{report.datetime}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="flask" slot="start"></ion-icon>
+    <ion-label>Species: {{report.species}}</ion-label>
+  </ion-item>
+  <app-uimap #dataMap [showUser]=false></app-uimap>
 </ion-content>
