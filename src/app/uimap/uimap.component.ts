@@ -135,9 +135,8 @@ export class UIMapComponent implements AfterViewChecked, AfterViewInit {
   public RemoveMarkerFromCluster(marker) {
     this.markerCluster.removeLayer(marker);
   }
-  public setView(center,zoom:number=4)
-  {
-    this.map.setView(center,zoom);
+  public setView(center, zoom: number = 4) {
+    this.map.setView(center, zoom);
   }
 
 }
