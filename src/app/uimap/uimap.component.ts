@@ -118,7 +118,7 @@ export class UIMapComponent implements AfterViewChecked, AfterViewInit {
   public AddCenteredMarker(options?: MarkerOptions) {
     return this.AddMarker(this.map.getCenter(), options);
   }
-  public AddMarker(location:LatLngExpression, options?: MarkerOptions) {
+  public AddMarker(location, options?: MarkerOptions) {
     let m = marker(location, options);
     m.addTo(this.map);
     return m;
