@@ -13,6 +13,7 @@ export class sightingReport {
   verified: boolean;
   sentFirstPicture: boolean;
   sentSecondPicture: boolean;
+  species:string;
 
 
   public get state(): string {
