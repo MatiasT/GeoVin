@@ -59,7 +59,7 @@ export class GeoVinAPIService {
         try {
 
           if (report.reportID == null) {
-            report.reportID = await this.sendReport(report, settings);
+            await this.sendReport(report, settings);
             await this.repository.updateReports();
           }
           if (!report.sentFirstPicture) {
@@ -83,20 +83,21 @@ export class GeoVinAPIService {
     var year = date.getFullYear();
     return day + "-" + month + "-" + year;
   }
-  private async sendReport(report: sightingReport, settings: Settings): Promise<Number> {
+  private async sendReport(report: sightingReport, settings: Settings): Promise<void> {
+    report.private = settings.privateCommits;
     let result = await this.http.get(this.baseURL + "/addpuntomapa.php", {
       username: report.username,
       deviceID: "",
       dateandtime: this.GetFormattedDate(report.datetime), //dd-mm-yyyy
       lat: report.lat.toString(),
       lng: report.lng.toString(),
-      valorVinchuca:"null",
+      valorVinchuca: "null",
       //the regex trims the extension.
       foto1path: report.firstPicture.substr(report.firstPicture.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""),
       foto2path: report.secondPicture.substr(report.secondPicture.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""),
       foto3path: "null",
       foto4path: report.habitat.toString(), //"habitat_dormitorio"
-      privado: settings.privateCommits ? "si" : "no",
+      privado: report.private ? "si" : "no",
       gpsdetect: "null",
       wifidetect: "null",
       mapdetect: "si",
@@ -116,7 +117,7 @@ export class GeoVinAPIService {
     }
     resultData = resultData.substr(12);
     let obj = JSON.parse(resultData);
-    return obj.serverId;
+    report.reportID = obj.serverId;
 
   }
 

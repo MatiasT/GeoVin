@@ -13,6 +13,7 @@ export class sightingReport {
   verified: boolean;
   sentFirstPicture: boolean;
   sentSecondPicture: boolean;
+  private:boolean;
   species:string;
 
 
@@ -36,6 +37,7 @@ export class sightingReport {
     this.verified = false;
     this.sentFirstPicture = false;
     this.sentSecondPicture = false;
+    this.private=false;
     this.reportID = null;
   }
   /*
