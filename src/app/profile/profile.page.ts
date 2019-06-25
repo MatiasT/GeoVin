@@ -52,7 +52,13 @@ export class ProfilePage implements OnInit {
   }
 
   public async showReport(report:sightingReport){
-    const modal = await this.modalController.create({animated:true,component:ViewReportPage});
+    const modal = await this.modalController
+    .create(
+      {
+        animated:true,
+        component:ViewReportPage,
+        componentProps:{report:report}
+      });
     await modal.present();
   }
 

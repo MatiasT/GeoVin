@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { sightingReport } from '../storage/sightingReport';
 
 @Component({
   selector: 'app-view-report',
@@ -8,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class ViewReportPage implements OnInit {
 
   constructor() { }
-
+  @Input()
+  public report: sightingReport;
   ngOnInit() {
   }
 
