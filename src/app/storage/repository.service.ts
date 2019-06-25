@@ -31,41 +31,46 @@ export class RepositoryService {
   private async init(): Promise<RepositoryService> {
     await this.platform.ready();
     //the storage does not hold type info, i'll create my own instances here.
-    let keys:Array<string>= await this.storage.keys();
-    if(!keys.includes("reports")){
-      await this.storage.setItem("reports",new Array<sightingReport>());
+    let keys: Array<string> = await this.storage.keys();
+    if (!keys.includes("reports")) {
+      await this.storage.setItem("reports", new Array<sightingReport>());
     }
-    this.reports = (await this.storage.getItem('reports')).map((d: any) => Object.assign(new sightingReport(), d));
-    if(!keys.includes("settings")){
-      await this.storage.setItem("settings",new Settings());
+    this.reports = (await this.storage.getItem('reports')).map(
+      (d: any) => {
+        let result: sightingReport = Object.assign(new sightingReport(), d);
+        result.datetime = new Date(result.datetime);
+        return result;
+      });
+    if (!keys.includes("settings")) {
+      await this.storage.setItem("settings", new Settings());
     }
     this.settings = Object.assign(new Settings(), await this.storage.getItem('settings'));
     return this;
-}
-//TODO: make the getters async.
-getUser() {
-  if (!this.user) return User.EmptyUser;
-  return this.user;
-}
-getReports(): sightingReport[] {
-  return this.reports;
-}
-getPendingReports(): sightingReport[] {
-  return this.getReports().filter(report => report.state == "Pending");
-}
-async addReport(report: sightingReport) {
-  this.reports.unshift(report);
-  await this.updateReports();
-}
+  }
+  //TODO: make the getters async.
+  getUser() {
+    if (!this.user) return User.EmptyUser;
+    return this.user;
+  }
+  getReports(): sightingReport[] {
+    return this.reports;
+  }
+  getPendingReports(): sightingReport[] {
+    return this.getReports().filter(report => report.state == "Pending");
+  }
+  async addReport(report: sightingReport) {
+    this.reports.unshift(report);
+    await this.updateReports();
+  }
 
-getSettings(): Settings {
-  return this.settings;
-}
-async updateSettings(settings: Settings) {
-  this.settings = settings;
-  await this.storage.setItem("settings", this.settings);
-}
-async updateReports() {
-  await this.storage.setItem("reports", this.reports)
-}
+  getSettings(): Settings {
+    return this.settings;
+  }
+  async updateSettings(settings: Settings) {
+    this.settings = settings;
+    await this.storage.setItem("settings", this.settings);
+  }
+  async updateReports() {
+    await this.storage.setItem("reports", this.reports)
+  }
 }
