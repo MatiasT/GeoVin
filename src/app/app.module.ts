@@ -15,11 +15,12 @@ import { File } from "@ionic-native/file/ngx";
 import { Network } from '@ionic-native/network/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { ViewReportPageModule } from './view-report/view-report.module';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,ViewReportPageModule],
   providers: [
     File,
     Camera,

@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RepositoryService } from '../storage/repository.service';
+import { ModalController } from '@ionic/angular';
+import { sightingReport } from '../storage/sightingReport';
+import { ViewReportPage } from '../view-report/view-report.page';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +41,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  constructor(public repository: RepositoryService) {
+  constructor(public repository: RepositoryService, private modalController:ModalController) {
     let settings = repository.getSettings();
     this._commitOverWifi = settings.commitOverWifi;
     this._privateCommits = settings.privateCommits;
@@ -48,5 +51,9 @@ export class ProfilePage implements OnInit {
 
   }
 
+  public async showReport(report:sightingReport){
+    const modal = await this.modalController.create({animated:true,component:ViewReportPage});
+    await modal.present();
+  }
 
 }
