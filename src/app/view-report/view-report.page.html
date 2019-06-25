@@ -11,15 +11,15 @@
         <ion-title>Upload Pending</ion-title>
       </ng-container>
       <ng-container *ngSwitchCase="'Uploaded'">
-          <ion-icon name="cloud-upload" size="large" slot="start"></ion-icon>
-          <ion-title>Uploaded</ion-title>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Verified'">
-            <ion-icon name="cloud-done" size="large" slot="start"></ion-icon>
-            <ion-title>Verified</ion-title>
-          </ng-container>
+        <ion-icon name="cloud-upload" size="large" slot="start"></ion-icon>
+        <ion-title>Uploaded</ion-title>
+      </ng-container>
+      <ng-container *ngSwitchCase="'Verified'">
+        <ion-icon name="cloud-done" size="large" slot="start"></ion-icon>
+        <ion-title>Verified</ion-title>
+      </ng-container>
     </ng-container>
- 
+
   </ion-toolbar>
 </ion-header>
 
@@ -27,6 +27,11 @@
   <ion-item>
     <ion-icon name="calendar" slot="start"></ion-icon>
     <ion-label>Date: {{report.datetime.toLocaleString()}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="eye-off" slot="start"></ion-icon>
+    Private:<ion-label disabled="false"></ion-label>
+    <ion-checkbox slot="end" disabled="true" [ngModel]="report.private"></ion-checkbox>
   </ion-item>
   <ion-item>
     <ion-icon name="flask" slot="start"></ion-icon>
