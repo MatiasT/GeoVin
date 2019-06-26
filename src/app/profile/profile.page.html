@@ -22,14 +22,17 @@
       <ion-item *ngIf="report.state=='Pending'">
         <ion-icon name="time" slot="start"></ion-icon>
         <ion-label>Upload Pending</ion-label>
+        <ion-icon name="information-circle-outline" slot="end"></ion-icon>
       </ion-item>
       <ion-item *ngIf="report.state=='Uploaded'">
         <ion-icon name="cloud-upload" slot="start"></ion-icon>
         <ion-label>Uploaded</ion-label>
+        <ion-icon name="information-circle-outline" slot="end"></ion-icon>
       </ion-item>
       <ion-item *ngIf="report.state=='Verified'">
         <ion-icon name="cloud-done" slot="start"></ion-icon>
         <ion-label>Verified</ion-label>
+        <ion-icon name="information-circle-outline" slot="end"></ion-icon>
       </ion-item>
     </ion-card-content>
   </ion-card>
