@@ -1,11 +1,33 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Learn
+      Aprender
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <iframe src="assets/learn/infogeneral-texto.html" ></iframe>
+  <ng-container *ngIf="resourcePath">
+    <iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(resourcePath)"></iframe>
+  </ng-container>
+  <ng-container *ngIf="!resourcePath">
+    <ion-list>
+        <ion-item (click)="resourcePath='assets/learn/infogeneral-texto.html'">
+          <ion-label>Información sobre las vinchucas</ion-label>
+        </ion-item>
+        <ion-item (click)="resourcePath='assets/learn/chagas-texto.html'">
+          <ion-label>La enfermedad de Chagas</ion-label>
+        </ion-item>
+        <ion-item (click)="resourcePath='assets/learn/Recomendaciones.html'">
+          <ion-label>Recomendaciones y contactos</ion-label>
+        </ion-item>
+        <ion-item >
+          <ion-label>Cómo sacar mejores fotos</ion-label>
+        </ion-item>
+        <ion-item >
+          <ion-label>Másinformación Online</ion-label>
+        </ion-item>
+    </ion-list>
+
+  </ng-container>
 </ion-content>
