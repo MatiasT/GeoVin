@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button *ngIf="resourcePath" slot="start" fill="clear" (click)="resourcePath=null">
+    <ion-button *ngIf="resourcePath" slot="start" fill="clear" (click)="resourcePath=''">
       <ion-icon name="arrow-back" slot="start"></ion-icon>
       <ion-label>Volver</ion-label>
     </ion-button>
@@ -12,9 +12,7 @@
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="resourcePath">
-    <iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(resourcePath)"></iframe>
-  </ng-container>
+  <iframe #pageFrame [style.display]="resourcePath ? 'block' : 'none'"></iframe>
   <ng-container *ngIf="!resourcePath">
     <ion-list>
       <ion-item (click)="resourcePath='assets/learn/infogeneral-texto.html'">
@@ -29,7 +27,7 @@
       <ion-item>
         <ion-label>Cómo sacar mejores fotos</ion-label>
       </ion-item>
-      <ion-item onclick= "window.open('http://www.geovin.com.ar', '_system', 'location=yes'); return false;">
+      <ion-item onclick="window.open('http://www.geovin.com.ar', '_blank', 'location=yes'); return false;">
         <ion-label>Másinformación Online</ion-label>
       </ion-item>
     </ion-list>

@@ -1,4 +1,4 @@
-import { Component, Output } from '@angular/core';
+import { Component, Output, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -7,11 +7,27 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['learn.page.scss']
 })
 export class LearnPage {
+
+  @ViewChild("pageFrame") pageframe: ElementRef;
+  private _resourcePath: string;
+
   @Output()
-  resourcePath: string;
-  
-  constructor(public sanitizer:DomSanitizer) {
-      this.resourcePath=null;
+  public get resourcePath(): string {
+    return this._resourcePath;
+  }
+  public set resourcePath(v: string) {
+    if (v != this._resourcePath) {
+      this._resourcePath = v;
+      if (this.pageframe)
+        this.pageframe.nativeElement.src = this.resourcePath;// this.sanitizer.bypassSecurityTrustResourceUrl(this.resourcePath);
+    }
+  }
+
+
+  constructor(public sanitizer: DomSanitizer) {
+    this.resourcePath = "";
+
+
   }
 
 }
