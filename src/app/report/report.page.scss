@@ -27,3 +27,20 @@ height: 100%;
 .textInput{
   width:100%;
 }
+
+.reportSpinner{
+  position: fixed;
+  width: 50vh;
+  height:50vh;
+}
+.reportSpinnerFade{
+  position: fixed;
+  width: 50vh;
+  height:50vh;
+}
+
+
+.reportButton{
+  --overflow:visible !important;
+  overflow: visible !important;
+}
